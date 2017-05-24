@@ -44,7 +44,6 @@
 					<sourceEntries>
 						<entry excluding="scheduler|Scheduler|commandexe" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="commandexe"/>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="scheduler"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -93,7 +92,6 @@
 					<sourceEntries>
 						<entry excluding="scheduler|Scheduler|commandexe" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="commandexe"/>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="scheduler"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
