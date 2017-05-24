@@ -1,10 +1,4 @@
-/*
- * scheduler.c
- *
- *  Created on: 24 mag 2017
- *      Author: wabri
- */
-
+#include <stdio.h>
 
 int scheduling () {
 	return 0;
