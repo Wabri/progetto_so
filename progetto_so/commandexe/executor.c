@@ -7,6 +7,8 @@
 int main(int argc, char *argv[])
 {
     char cmd[MAX_CMN_LEN] = "", **p;
+    int k = 0;
+    FILE *f = fopen("out.k", "w");
 
     if (argc < 2) /*no command specified*/
     {
@@ -21,8 +23,10 @@ int main(int argc, char *argv[])
             strcat(cmd, " ");
             strcat(cmd, *p);
         }
-        system(cmd);
+        system(strcat(cmd," > out.k"));
+        
+	k = k + 1;
     }
-
+    fclose(f);
     return 0;
 }

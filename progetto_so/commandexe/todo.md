@@ -11,5 +11,5 @@ esempio:
 
 # TO-DO
 
-    1) Fare in modo che il programma accetti i comandi da un file .txt (?)
-    2) Far scrivere l'output sul file out.k con k numero di esecuzione. 
+    1) Fare in modo che il programma scriva su out.k con k intero corrispondente al numero di esecuzione
+    2) Esecuzione in **parallelo**?
