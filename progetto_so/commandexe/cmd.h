@@ -18,7 +18,7 @@ char * pch;
 }
 
 
-int main()
+int cmd()
 {
     int k = 1;
     char cmd[MAX_CMN_LEN] = "";
