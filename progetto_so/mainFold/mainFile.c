@@ -5,8 +5,9 @@
  *      Author: wabri
  */
 #include "../commandexe/cmd.h"
+#include "../procScheduler/scheduler.h"
 
-int main () {
+int main() {
 	cmd();
 	return 0;
 }
