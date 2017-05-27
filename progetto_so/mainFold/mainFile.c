@@ -4,10 +4,10 @@
  *  Created on: 25 mag 2017
  *      Author: wabri
  */
-#include "../commandexe/cmd.h"
+#include "../commandexe/cmd_yuri.h"
 #include "../procScheduler/scheduler.h"
 
 int main() {
-	cmd();
+	cmd_yuri();
 	return 0;
 }
