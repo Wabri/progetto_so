@@ -15,18 +15,27 @@ typedef struct TaskElement {
 } Task;
 
 void newTaskElement(Task*, int, char[], int, int);
+int createID(Task*);
+char* getName(Task*);
+int getPriority(Task*);
+int getRemainingExecution(Task*);
+
 
 int runScheduling() {
+	printf("               This is a Scheduler Process\n\r");
+	printf(".......................................................................\n\r");
 	Task *firstTask = malloc(sizeof(Task));
-	Task *lastTask;
-	lastTask = firstTask;
-	newTaskElement(lastTask,10,"test",5,40);
-	printf("name of first Task: %s \n\r", lastTask->nameTask);
+	Task *actualTask;
+	actualTask = firstTask;
+	while (1) {
+		break;
+	}
+	return 0;
 }
 
-void newTaskElement(Task *actualTask, int idT, char nameT[], int priorityT, int execT) {
+void newTaskElement(Task *actualTask, int idT, char nameT[], int priorityT,	int execT) {
 	actualTask->ID = idT;
-	strcpy(actualTask->nameTask,nameT);
+	strcpy(actualTask->nameTask, nameT);
 	actualTask->priority = priorityT;
 	actualTask->remainingExe = execT;
 	actualTask->nextTask = malloc(sizeof(Task));
