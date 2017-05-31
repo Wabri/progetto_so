@@ -24,7 +24,7 @@ char* getTaskName();
 int getPriority();
 int getExeNumber();
 int checkEmptyList(Task*);
-Task* newTaskElement(Task*, int);
+Task* newTaskElement(Task*, int, char*, int, int);
 
 int runScheduling() {
 	int idTraker = 1;
