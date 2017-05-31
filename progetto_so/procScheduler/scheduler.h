@@ -19,22 +19,27 @@ typedef struct TaskElement {
 int getChoice();
 void printAllTasks(Task*, Task*);
 void printTask(Task*);
-int createID(Task*);
-void getTaskName(Task*);
-int getPriority();
-int getExeNumber();
 int checkEmptyList(Task*);
+int getExeNumber();
+int getPriority();
+void getTaskName(Task*);
 Task* newTaskElement(Task*, int);
+void executionTask(Task*, char);
+void deleteTask(Task*);
+char switchPolicy(char);
 
 int runScheduling() {
 	int idTraker = 1;
 	int flag = 1;
+	char policy = 'p';
 	Task *firstTask = malloc(sizeof(Task));
 	Task *lastTask = NULL; // the last Task is always empty
 	Task *tmpTask;
-	printf(".......................................................................\n\r");
+	printf(
+			".......................................................................\n\r");
 	printf("               This is a process scheduler\n\r");
-	printf(".......................................................................\n\r");
+	printf(
+			".......................................................................\n\r");
 	while (flag == 1) {
 		switch (getChoice()) {
 		case 0:
@@ -43,12 +48,12 @@ int runScheduling() {
 		case 1:
 			if (checkEmptyList(firstTask) == 1)
 				break;
-			printf("| ID + PRIORITA\' + NOME TASK + ESECUZ. RIMANENTI | \n");
+			printf("| ID + PRIORITA\' + NOME TASK + ESECUZ. RIMANENTI | \n\r");
 			printf("This task has the value of:\n\r");
 			printTask(firstTask);
 			break;
 		case 2:
-			if (checkEmptyList(firstTask)){
+			if (checkEmptyList(firstTask)) {
 				break;
 			}
 			printAllTasks(firstTask, lastTask);
@@ -65,10 +70,25 @@ int runScheduling() {
 			idTraker += 1;
 			break;
 		case 4:
-
+//			executionTask(firstTask, policy);
 			break;
 		case 5:
-
+			deleteTask(tmpTask);
+			break;
+		case 6:
+			printf("\n\rYou change the policy of scheduling from ");
+			if (policy == 'p') {
+				printf("priority ");
+			} else if (policy == 'e') {
+				printf("remaining execution ");
+			}
+			policy = switchPolicy(policy);
+			printf("to ");
+			if (policy == 'p') {
+				printf("priority \n\r");
+			} else if (policy == 'e') {
+				printf("remaining execution \n\r");
+			}
 			break;
 		default:
 			flag = 0;
@@ -76,6 +96,35 @@ int runScheduling() {
 		}
 	}
 	return 0;
+}
+
+int getChoice() {
+	printf("\n\rYou can choose to:\n\r");
+	printf(" 0) Exit\n\r 1) Print a task\n\r 2) Print all tasks\n\r");
+	printf(" 3) Create a new task\n\r 4) Execute Task\n\r");
+	printf(" 5) Delete Task\n\r 6) Switch policy\n\r");
+	int res = 0;
+	printf("> ");
+	scanf("%i", &res);
+	return res;
+}
+
+void printAllTasks(Task *first, Task *last) {
+	printf("The list of task is: \n\r");
+	printf("| ID + PRIORITA\' + NOME TASK + ESECUZ. RIMANENTI | \n\r");
+	Task* tmp = first;
+	while (tmp != last) {
+		printTask(tmp);
+		tmp = (*tmp).nextTask;
+	}
+}
+
+void printTask(Task *thisTask) {
+	printf("+----+-----------+-----------+-------------------+ \n\r");
+	printf("| %d  + %d         + %s        + %d                | \n\r",
+			thisTask->ID, thisTask->priority, thisTask->nameTask,
+			thisTask->remainingExe);
+	printf("+----+-----------+-----------+-------------------+ \n\r");
 }
 
 int checkEmptyList(Task *actualTask) {
@@ -116,40 +165,26 @@ void getTaskName(Task *actualTask) {
 	return;
 }
 
-int getChoice() {
-	printf("You can choose to:\n\r");
-	printf(
-			" 0) Exit\n\r 1) Print a task\n\r 2) Print all tasks\n\r 3) Create a new task\n\r");
-	int res = 0;
-	printf("> ");
-	scanf("%i", &res);
-	return res;
-}
-
-void printAllTasks(Task *first, Task *last) {
-	printf("The list of task is: \n\r");
-	printf("| ID + PRIORITA\' + NOME TASK + ESECUZ. RIMANENTI | \n");
-	Task* tmp = first;
-	while (tmp != last) {
-		printTask(tmp);
-		tmp = (*tmp).nextTask;
-	}
-}
-
-void printTask(Task *thisTask) {
-	printf("+----+-----------+-----------+-------------------+ \n\r");
-	printf("| %d  + %d         + %s        + %d                | \n\r",
-			thisTask->ID, thisTask->priority, thisTask->nameTask,
-			thisTask->remainingExe);
-	printf("+----+-----------+-----------+-------------------+ \n\r");
-}
-
 Task* newTaskElement(Task *actualTask, int idT) {
 	actualTask->ID = idT;
 	getTaskName(actualTask);
-//	strcpy(actualTask->nameTask, tmp);
 	actualTask->priority = getPriority();
 	actualTask->remainingExe = getExeNumber();
 	(*actualTask).nextTask = malloc(sizeof(Task));
 	return (*actualTask).nextTask;
+}
+
+void deleteTask(Task *actualTask) {
+	while (1) {
+
+	}
+}
+
+char switchPolicy(char pol) {
+	if (pol == 'p') {
+		return 'e';
+	} else if (pol == 'e') {
+		return 'p';
+	}
+	return 'p';
 }
