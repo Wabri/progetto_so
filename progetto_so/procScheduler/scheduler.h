@@ -59,7 +59,7 @@ int runScheduling() {
 //				printTask(tmpTask);
 //				printTask(lastTask);
 //			}
-			// qui ci va la richiesta degli input e creazione con stampa del Task
+			// 
 			idTraker += 1;
 			break;
 		default:
