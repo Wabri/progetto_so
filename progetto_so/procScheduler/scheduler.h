@@ -61,9 +61,6 @@ int runScheduling() {
 			printTask(firstTask);
 			break;
 		case 2:
-			if (checkEmptyList(firstTask)) {
-				break;
-			}
 			break;
 		case 3:
 			if (firstTask->ID == 0) {
@@ -92,7 +89,9 @@ int runScheduling() {
 			flag = 0;
 			break;
 		}
-		printAllTasks(firstTask,lastTask,policy);
+		if (!checkEmptyList(firstTask)) {
+			printAllTasks(firstTask, lastTask, policy);
+		}
 	}
 	return 0;
 }
@@ -107,14 +106,20 @@ Task* selectTask(Task* t) {
 }
 
 void deleteTask(Task* actualTask) {
-	actualTask = selectTask(actualTask);
-	actualTask = NULL;
 	return;
 }
 
 int executeTask(Task* actualTask, char pol) {
+	return NULL;
+}
+
+int executeTaskID(Task* actualTask) {
 	actualTask = selectTask(actualTask);
 	actualTask->remainingExe = actualTask->remainingExe - 1;
+	if (actualTask->remainingExe == 0) {
+		deleteTask(actualTask);
+		return 0;
+	}
 	return actualTask->remainingExe;
 }
 
