@@ -16,12 +16,12 @@ typedef struct TaskElement {
 	struct TaskElement *nextTask;
 } Task;
 
-Task* newTaskElement(Task*, int, char[], int, int);
+Task* newTaskElement(Task*, int);
 int getChoice();
 void printAllTasks(Task*, Task*);
 void printTask(Task*);
 int createID(Task*);
-char* getTaskName();
+void getTaskName(Task*);
 int getPriority();
 int getExeNumber();
 int checkEmptyList(Task*);
@@ -54,15 +54,13 @@ int runScheduling() {
 			break;
 		case 3:
 			if (firstTask->ID == 0) {
-				lastTask = newTaskElement(firstTask, idTraker, getTaskName(), getPriority(), getExeNumber());
+				lastTask = newTaskElement(firstTask, idTraker);
 				printTask(firstTask);
-				printTask(lastTask);
 			} else {
 				tmpTask = lastTask;
-				lastTask = newTaskElement(lastTask, idTraker, getTaskName(), getPriority(), getExeNumber());
-//				printTask(firstTask);
-//				printTask(tmpTask);
-//				printTask(lastTask);
+				lastTask = newTaskElement(lastTask, idTraker);
+				printTask(tmpTask);
+	
 			}
 			idTraker += 1;
 			break;
@@ -104,12 +102,13 @@ int getPriority(){
 	return p;
 }
 
-char* getTaskName(){
-	char* name = malloc(8);
+void getTaskName(Task *actualTask){
+	char name[8];
 	printf("Assegna un nome a questo task (max 8 caratteri) : ");
-	scanf("%s",&name);
-	return name;	
-}	
+	scanf("%s",name);
+	actualTask->nameTask = name;
+	return;	
+}
 
 int getChoice() {
 	printf("You can choose to:\n\r");
@@ -118,7 +117,6 @@ int getChoice() {
 	int res = 0;
 	printf("> ");
 	scanf("%i", &res);
-	printf("your choice was : %i \n\r", res);
 	return res;
 }
 
@@ -140,12 +138,12 @@ void printTask(Task *thisTask) {
 	printf("+----+-----------+-----------+-------------------+ \n\r");
 }
 
-Task* newTaskElement(Task *actualTask, int idT, char* nameT, int priorityT,
-		int execT) {
+Task* newTaskElement(Task *actualTask, int idT) {
 	actualTask->ID = idT;
-	strcpy(actualTask->nameTask, nameT);
-	actualTask->priority = priorityT;
-	actualTask->remainingExe = execT;
+	getTaskName(actualTask);
+//	strcpy(actualTask->nameTask, tmp);
+	actualTask->priority = getPriority();
+	actualTask->remainingExe = getExeNumber();
 	(*actualTask).nextTask = malloc(sizeof(Task));
 	return (*actualTask).nextTask;
 }
