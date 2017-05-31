@@ -96,7 +96,7 @@ int getPriority(){
 	printf("Inserisci la priorita' richiesta : ");
 	scanf("%i",&p);
 	while((p<0) || (p>10)){
-		printf("\tErrore, la priorita' deve essere un numero 0<N<9\n");
+		printf("\tERRORE! La priorita' deve essere un numero 0<N<9\n");
 		p = getPriority();
 	}
 	return p;
