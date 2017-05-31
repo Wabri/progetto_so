@@ -10,7 +10,7 @@
 
 typedef struct TaskElement {
 	int ID;
-	char* nameTask;
+	char nameTask[8];
 	int priority;
 	int remainingExe;
 	struct TaskElement *nextTask;
@@ -106,7 +106,7 @@ void getTaskName(Task *actualTask){
 	char name[8];
 	printf("Assegna un nome a questo task (max 8 caratteri) : ");
 	scanf("%s",name);
-	actualTask->nameTask = name;
+	strcpy(actualTask->nameTask, name);
 	return;	
 }
 
@@ -142,7 +142,6 @@ void printTask(Task *thisTask) {
 Task* newTaskElement(Task *actualTask, int idT) {
 	actualTask->ID = idT;
 	getTaskName(actualTask);
-//	strcpy(actualTask->nameTask, tmp);
 	actualTask->priority = getPriority();
 	actualTask->remainingExe = getExeNumber();
 	(*actualTask).nextTask = malloc(sizeof(Task));
