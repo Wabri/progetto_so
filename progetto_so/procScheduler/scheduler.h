@@ -16,15 +16,16 @@ typedef struct TaskElement {
 	struct TaskElement *nextTask;
 } Task;
 
-Task* newTaskElement(Task*, int);
 int getChoice();
 void printAllTasks(Task*, Task*);
 void printTask(Task*);
 int createID(Task*);
-void getTaskName(Task*);
+
+char* getTaskName();
 int getPriority();
 int getExeNumber();
 int checkEmptyList(Task*);
+Task* newTaskElement(Task*, int);
 
 int runScheduling() {
 	int idTraker = 1;
@@ -63,6 +64,12 @@ int runScheduling() {
 	
 			}
 			idTraker += 1;
+			break;
+		case 4:
+
+			break;
+		case 5:
+
 			break;
 		default:
 			flag = 0;
