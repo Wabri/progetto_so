@@ -21,7 +21,6 @@ void printAllTasks(Task*, Task*);
 void printTask(Task*);
 Task* newTaskElement(Task*, int, char[], int, int);
 
-
 int runScheduling() {
 	int idTraker = 1;
 	int flag = 1;
