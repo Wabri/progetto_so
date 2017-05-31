@@ -12,7 +12,7 @@ typedef struct TaskElement {
 	int ID;
 	char nameTask[8];
 	int priority;
-	int remainingExe;
+	int remaningExe;
 	struct TaskElement *nextTask;
 } Task;
 
@@ -25,6 +25,9 @@ void getTaskName(Task*);
 int getPriority();
 int getExeNumber();
 int checkEmptyList(Task*);
+void deleteTask(Task*);
+int execTask(Task*);
+Task* selectTask(Task*);
 char* sepa = "+----+-----------+-----------+-------------------+ \n\r";
 
 int runScheduling() {
@@ -64,6 +67,14 @@ int runScheduling() {
 			}
 			idTraker += 1;
 			break;
+		case 4:
+			executeTask(firstTask);
+			printAllTasks(firstTask,lastTask);
+			break;
+		case 5:
+			deleteTask(firstTask);
+			printAllTasks(firstTask,lastTask);
+			break;
 		default:
 			flag = 0;
 			break;
@@ -72,7 +83,29 @@ int runScheduling() {
 	return 0;
 }
 
-int checkEmptyList(Task *t){
+Task* selectTask(Task* t) {
+	int id;
+	printf("Seleziona il task...\nInserisci l'ID : ");
+	scanf("%d",&id);
+	while(t->ID!=id) 
+		t = t->nextTask;
+	return t;
+}
+
+void deleteTask(Task* actualTask){
+	actualTask = selectTask(actualTask);
+	actualTask = NULL;
+	return;
+}
+
+int executeTask(Task* actualTask) {
+	actualTask = selectTask(actualTask);
+	actualTask->remaningExe = actualTask->remaningExe-1;
+	return actualTask->remaningExe;
+}
+
+
+int checkEmptyList(Task *t) {
 	if(t->ID == 0) {
 		printf("\tList is empty! Please insert a task first...\n\r");
 		return 1;
@@ -113,7 +146,7 @@ void getTaskName(Task *actualTask){
 int getChoice() {
 	printf("\nYou can choose to:\n\r");
 	printf(
-			" 0) Exit\n\r 1) Print a task\n\r 2) Print all tasks\n\r 3) Create a new task\n\r");
+			" 0) Exit\n\r 1) Print a task\n\r 2) Print all tasks\n\r 3) Create a new task\n\r 4) Execute a task\n\r 5) Delete a task\n\r");
 	int res = 0;
 	printf("> ");
 	scanf("%i", &res);
@@ -135,15 +168,15 @@ void printTask(Task *thisTask) {
 	printf(sepa);
 	printf("| %d  + %d         + %s        + %d                | \n\r",
 			thisTask->ID, thisTask->priority, thisTask->nameTask,
-			thisTask->remainingExe);
-	printf(sepa);
+			thisTask->remaningExe);
 }
+
 
 Task* newTaskElement(Task *actualTask, int idT) {
 	actualTask->ID = idT;
 	getTaskName(actualTask);
 	actualTask->priority = getPriority();
-	actualTask->remainingExe = getExeNumber();
+	actualTask->remaningExe = getExeNumber();
 	(*actualTask).nextTask = malloc(sizeof(Task));
 	return (*actualTask).nextTask;
 }
