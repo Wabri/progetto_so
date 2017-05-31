@@ -10,9 +10,9 @@
 
 typedef struct TaskElement {
 	int ID;
-	char nameTask[8];
-	int priority; // number between 0 and 9
-	int remainingExe; // max 99 execution per task
+	char* nameTask;
+	int priority;
+	int remainingExe;
 	struct TaskElement *nextTask;
 } Task;
 
@@ -20,45 +20,48 @@ int getChoice();
 void printAllTasks(Task*, Task*);
 void printTask(Task*);
 int createID(Task*);
+
 char* getTaskName();
 int getPriority();
 int getExeNumber();
 int checkEmptyList(Task*);
-Task* newTaskElement(Task*, int, char*, int, int);
+Task* newTaskElement(Task*, int);
 
 int runScheduling() {
 	int idTraker = 1;
 	int flag = 1;
+	char* header = 
+			".......................................................................\n\r";
 	Task *firstTask = malloc(sizeof(Task));
 	Task *lastTask = NULL; // the last Task is always empty
 	Task *tmpTask;
-	printf("               This is a Scheduler Process\n\r");
-	printf(
-			".......................................................................\n\r");
+	printf("%s",header);
+	printf("               This is a process scheduler\n\r");
+	printf("%s",header);
 	while (flag == 1) {
 		switch (getChoice()) {
 		case 0:
-			printf("Bye!!!\n\r");
+			printf("Bye!\n\r");
 			return 0;
 		case 1:
+			if(checkEmptyList(firstTask)==1) break;
 			printf("| ID + PRIORITA\' + NOME TASK + ESECUZ. RIMANENTI | \n");
-			printf("This Task have the value of:\n\r");
+			printf("This task has the value of:\n\r");
 			printTask(firstTask);
 			break;
 		case 2:
+			if(checkEmptyList(firstTask)==1) break;
 			printAllTasks(firstTask, lastTask);
 			break;
 		case 3:
 			if (firstTask->ID == 0) {
-				lastTask = newTaskElement(firstTask, idTraker, "test", 4, 5);
+				lastTask = newTaskElement(firstTask, idTraker);
 				printTask(firstTask);
-				printTask(lastTask);
 			} else {
 				tmpTask = lastTask;
-				lastTask = newTaskElement(lastTask, idTraker, "test", 4, 5);
-				printTask(firstTask);
+				lastTask = newTaskElement(lastTask, idTraker);
 				printTask(tmpTask);
-				printTask(lastTask);
+	
 			}
 			idTraker += 1;
 			break;
@@ -76,14 +79,51 @@ int runScheduling() {
 	return 0;
 }
 
+int checkEmptyList(Task *t){
+	if(t->ID == 0) {
+		printf("\tList is empty! Please insert a task first...\n\r");
+		return 1;
+	}
+	return 0;
+}	
+
+int getExeNumber(){
+	int exnum = 0;
+	printf("Inserisci il numero di esecuzioni rimanenti : ");
+	scanf("%i",&exnum);
+	while((exnum<0) || (exnum>99)){
+		printf("\tErrore, il numex blabla \n");
+		exnum = getExeNumber();
+	}	
+	return exnum;
+}
+
+int getPriority(){
+	int p = 0;
+	printf("Inserisci la priorita' richiesta : ");
+	scanf("%i",&p);
+	while((p<0) || (p>10)){
+		printf("\tErrore, la priorita' blablabla \n");
+		p = getPriority();
+	}
+	return p;
+}
+
+void getTaskName(Task *actualTask){
+	char name[8];
+	printf("Assegna un nome a questo task (max 8 caratteri) : ");
+	scanf("%s",name);
+	actualTask->nameTask = name;
+	return;	
+}
+
 int getChoice() {
-	printf("You can chose to:\n\r");
+	printf("You can choose to:\n\r");
 	printf(
-			" 0) Exit\n\r 1) Print Task\n\r 2) Print all tasks\n\r 3) Create new Task\n\r");
+			" 0) Exit\n\r 1) Print a task\n\r 2) Print all tasks\n\r 3) Create a new task\n\r");
 	int res = 0;
 	printf("> ");
 	scanf("%i", &res);
-	printf("you choice %i \n\r", res);
 	return res;
 }
 
@@ -105,12 +145,12 @@ void printTask(Task *thisTask) {
 	printf("+----+-----------+-----------+-------------------+ \n\r");
 }
 
-Task* newTaskElement(Task *actualTask, int idT, char nameT[], int priorityT,
-		int execT) {
+Task* newTaskElement(Task *actualTask, int idT) {
 	actualTask->ID = idT;
-	strcpy(actualTask->nameTask, nameT);
-	actualTask->priority = priorityT;
-	actualTask->remainingExe = execT;
+	getTaskName(actualTask);
+//	strcpy(actualTask->nameTask, tmp);
+	actualTask->priority = getPriority();
+	actualTask->remainingExe = getExeNumber();
 	(*actualTask).nextTask = malloc(sizeof(Task));
 	return (*actualTask).nextTask;
 }
