@@ -24,7 +24,7 @@ char* getTaskName();
 int getPriority();
 int getExeNumber();
 int checkEmptyList(Task*);
-Task* newTaskElement(Task*, int, char[], int, int);
+Task* newTaskElement(Task*, int);
 
 int runScheduling() {
 	int idTraker = 1;
@@ -79,7 +79,7 @@ int runScheduling() {
 int getChoice() {
 	printf("You can chose to:\n\r");
 	printf(
-			" 0) Exit\n\r 1) Print Task\n\r 2) Print all tasks\n\r 3) Create new Task\n\r 4) Execution of Task\n\r 5) Delete task\n\r 6) Modify task priority\n\r 7) Switch scheduling policy");
+			" 0) Exit\n\r 1) Print Task\n\r 2) Print all tasks\n\r 3) Create new Task\n\r");
 	int res = 0;
 	printf("> ");
 	scanf("%i", &res);
