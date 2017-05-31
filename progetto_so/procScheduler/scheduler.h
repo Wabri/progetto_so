@@ -12,7 +12,7 @@ typedef struct TaskElement {
 	int ID;
 	char nameTask[8];
 	int priority;
-	int remainingExe;
+	int remaningExe;
 	struct TaskElement *nextTask;
 } Task;
 
@@ -20,6 +20,10 @@ int getChoice();
 void printAllTasks(Task*, Task*);
 void printTask(Task*);
 int checkEmptyList(Task*);
+void deleteTask(Task*);
+int execTask(Task*);
+Task* selectTask(Task*);
+char* sepa = "+----+-----------+-----------+-------------------+ \n\r";
 int getExeNumber();
 int getPriority();
 void getTaskName(Task*);
@@ -61,21 +65,23 @@ int runScheduling() {
 		case 3:
 			if (firstTask->ID == 0) {
 				lastTask = newTaskElement(firstTask, idTraker);
-				printTask(firstTask);
+				printAllTasks(firstTask, lastTask);
 			} else {
 				tmpTask = lastTask;
 				lastTask = newTaskElement(lastTask, idTraker);
-				printTask(tmpTask);
+				printAllTasks(firstTask, lastTask);
 			}
 			idTraker += 1;
 			break;
 		case 4:
-//			executionTask(firstTask, policy);
+			executeTask(firstTask);
+			printAllTasks(firstTask,lastTask);
 			break;
 		case 5:
-			deleteTask(tmpTask);
-			break;
-		case 6:
+			deleteTask(firstTask);
+			printAllTasks(firstTask,lastTask);
+      break
+    case 6:
 			printf("\n\rYou change the policy of scheduling from ");
 			if (policy == 'p') {
 				printf("priority ");
@@ -98,34 +104,27 @@ int runScheduling() {
 	return 0;
 }
 
-int getChoice() {
-	printf("\n\rYou can choose to:\n\r");
-	printf(" 0) Exit\n\r 1) Print a task\n\r 2) Print all tasks\n\r");
-	printf(" 3) Create a new task\n\r 4) Execute Task\n\r");
-	printf(" 5) Delete Task\n\r 6) Switch policy\n\r");
-	int res = 0;
-	printf("> ");
-	scanf("%i", &res);
-	return res;
+Task* selectTask(Task* t) {
+	int id;
+	printf("Seleziona il task...\nInserisci l'ID : ");
+	scanf("%d",&id);
+	while(t->ID!=id) 
+		t = t->nextTask;
+	return t;
 }
 
-void printAllTasks(Task *first, Task *last) {
-	printf("The list of task is: \n\r");
-	printf("| ID + PRIORITA\' + NOME TASK + ESECUZ. RIMANENTI | \n\r");
-	Task* tmp = first;
-	while (tmp != last) {
-		printTask(tmp);
-		tmp = (*tmp).nextTask;
-	}
+void deleteTask(Task* actualTask){
+	actualTask = selectTask(actualTask);
+	actualTask = NULL;
+	return;
 }
 
-void printTask(Task *thisTask) {
-	printf("+----+-----------+-----------+-------------------+ \n\r");
-	printf("| %d  + %d         + %s        + %d                | \n\r",
-			thisTask->ID, thisTask->priority, thisTask->nameTask,
-			thisTask->remainingExe);
-	printf("+----+-----------+-----------+-------------------+ \n\r");
+int executeTask(Task* actualTask) {
+	actualTask = selectTask(actualTask);
+	actualTask->remaningExe = actualTask->remaningExe-1;
+	return actualTask->remaningExe;
 }
+
 
 int checkEmptyList(Task *actualTask) {
 	if (!(actualTask->ID)) {
@@ -165,11 +164,40 @@ void getTaskName(Task *actualTask) {
 	return;
 }
 
+int getChoice() {
+	printf("\n\rYou can choose to:\n\r");
+	printf(" 0) Exit\n\r 1) Print a task\n\r 2) Print all tasks\n\r");
+	printf(" 3) Create a new task\n\r 4) Execute Task\n\r");
+	printf(" 5) Delete Task\n\r 6) Switch policy\n\r");
+	int res = 0;
+	printf("> ");
+	scanf("%i", &res);
+	return res;
+}
+
+void printAllTasks(Task *first, Task *last) {
+	printf("\nThe list of tasks is: \n\r");
+	printf(sepa);
+	printf("| ID + PRIORITA\' + NOME TASK + ESECUZ. RIMANENTI | \n");
+	Task* tmp = first;
+	while (tmp != last) {
+		printTask(tmp);
+		tmp = (*tmp).nextTask;
+	}
+}
+
+void printTask(Task *thisTask) {
+	printf(sepa);
+	printf("| %d  + %d         + %s        + %d                | \n\r",
+			thisTask->ID, thisTask->priority, thisTask->nameTask,
+			thisTask->remaningExe);
+}
+
 Task* newTaskElement(Task *actualTask, int idT) {
 	actualTask->ID = idT;
 	getTaskName(actualTask);
 	actualTask->priority = getPriority();
-	actualTask->remainingExe = getExeNumber();
+	actualTask->remaningExe = getExeNumber();
 	(*actualTask).nextTask = malloc(sizeof(Task));
 	return (*actualTask).nextTask;
 }
