@@ -19,6 +19,11 @@ typedef struct TaskElement {
 int getChoice();
 void printAllTasks(Task*, Task*);
 void printTask(Task*);
+int createID(Task*);
+char* getTaskName();
+int getPriority();
+int getExeNumber();
+int checkEmptyList(Task*);
 Task* newTaskElement(Task*, int, char[], int, int);
 
 int runScheduling() {
