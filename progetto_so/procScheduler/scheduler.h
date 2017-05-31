@@ -48,17 +48,18 @@ int runScheduling() {
 			printAllTasks(firstTask, lastTask);
 			break;
 		case 3:
-			if (firstTask->ID == 0) {
-				lastTask = newTaskElement(firstTask, idTraker, "test", 4, 5);
-				printTask(firstTask);
-				printTask(lastTask);
-			} else {
-				tmpTask = lastTask;
-				lastTask = newTaskElement(lastTask, idTraker, "test", 4, 5);
-				printTask(firstTask);
-				printTask(tmpTask);
-				printTask(lastTask);
-			}
+//			if (firstTask->ID == 0) {
+//				lastTask = newTaskElement(firstTask, idTraker, "test", 4, 5);
+//				printTask(firstTask);
+//				printTask(lastTask);
+//			} else {
+//				tmpTask = lastTask;
+//				lastTask = newTaskElement(lastTask, idTraker, "test", 4, 5);
+//				printTask(firstTask);
+//				printTask(tmpTask);
+//				printTask(lastTask);
+//			}
+			// qui ci va la richiesta degli input e creazione con stampa del Task
 			idTraker += 1;
 			break;
 		default:
