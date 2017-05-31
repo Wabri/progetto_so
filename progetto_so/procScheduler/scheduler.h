@@ -25,6 +25,7 @@ void getTaskName(Task*);
 int getPriority();
 int getExeNumber();
 int checkEmptyList(Task*);
+char* sepa = "+----+-----------+-----------+-------------------+ \n\r";
 
 int runScheduling() {
 	int idTraker = 1;
@@ -45,7 +46,6 @@ int runScheduling() {
 		case 1:
 			if(checkEmptyList(firstTask)==1) break;
 			printf("| ID + PRIORITA\' + NOME TASK + ESECUZ. RIMANENTI | \n");
-			printf("This task has the value of:\n\r");
 			printTask(firstTask);
 			break;
 		case 2:
@@ -55,11 +55,11 @@ int runScheduling() {
 		case 3:
 			if (firstTask->ID == 0) {
 				lastTask = newTaskElement(firstTask, idTraker);
-				printTask(firstTask);
+				printAllTasks(firstTask, lastTask);
 			} else {
 				tmpTask = lastTask;
 				lastTask = newTaskElement(lastTask, idTraker);
-				printTask(tmpTask);
+				printAllTasks(firstTask, lastTask);
 	
 			}
 			idTraker += 1;
@@ -85,7 +85,7 @@ int getExeNumber(){
 	printf("Inserisci il numero di esecuzioni rimanenti : ");
 	scanf("%i",&exnum);
 	while((exnum<0) || (exnum>99)){
-		printf("\tErrore, il numex blabla \n");
+		printf("\tERRORE! Il numero di esecuzioni rimanenti deve essere 0<N<100 \n");
 		exnum = getExeNumber();
 	}	
 	return exnum;
@@ -96,7 +96,7 @@ int getPriority(){
 	printf("Inserisci la priorita' richiesta : ");
 	scanf("%i",&p);
 	while((p<0) || (p>10)){
-		printf("\tErrore, la priorita' blablabla \n");
+		printf("\tErrore, la priorita' deve essere un numero 0<N<9\n");
 		p = getPriority();
 	}
 	return p;
@@ -111,7 +111,7 @@ void getTaskName(Task *actualTask){
 }
 
 int getChoice() {
-	printf("You can choose to:\n\r");
+	printf("\nYou can choose to:\n\r");
 	printf(
 			" 0) Exit\n\r 1) Print a task\n\r 2) Print all tasks\n\r 3) Create a new task\n\r");
 	int res = 0;
@@ -121,7 +121,8 @@ int getChoice() {
 }
 
 void printAllTasks(Task *first, Task *last) {
-	printf("The list of task is: \n\r");
+	printf("\nThe list of tasks is: \n\r");
+	printf(sepa);
 	printf("| ID + PRIORITA\' + NOME TASK + ESECUZ. RIMANENTI | \n");
 	Task* tmp = first;
 	while (tmp != last) {
@@ -131,11 +132,11 @@ void printAllTasks(Task *first, Task *last) {
 }
 
 void printTask(Task *thisTask) {
-	printf("+----+-----------+-----------+-------------------+ \n\r");
+	printf(sepa);
 	printf("| %d  + %d         + %s        + %d                | \n\r",
 			thisTask->ID, thisTask->priority, thisTask->nameTask,
 			thisTask->remainingExe);
-	printf("+----+-----------+-----------+-------------------+ \n\r");
+	printf(sepa);
 }
 
 Task* newTaskElement(Task *actualTask, int idT) {
