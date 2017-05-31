@@ -18,7 +18,7 @@ typedef struct TaskElement {
 
 Task* newTaskElement(Task*, int, char[], int, int);
 int getChoice();
-void printAllTasks(Task*);
+void printAllTasks(Task*, Task*);
 void printTask(Task*);
 int createID(Task*);
 char* getName(Task*);
@@ -29,8 +29,8 @@ int runScheduling() {
 	int idTraker = 1;
 	int flag = 1;
 	Task *firstTask = malloc(sizeof(Task));
-	Task *lastTask; // the last Task is always empty
-	lastTask = firstTask;
+	Task *lastTask = NULL; // the last Task is always empty
+	Task *tmpTask;
 	printf("               This is a Scheduler Process\n\r");
 	printf(
 			".......................................................................\n\r");
@@ -40,13 +40,25 @@ int runScheduling() {
 			printf("Bye!!!\n\r");
 			return 0;
 		case 1:
-			printAllTasks(firstTask);
+			printf("| ID + PRIORITA\' + NOME TASK + ESECUZ. RIMANENTI | \n");
+			printf("This Task have the value of:\n\r");
+			printTask(firstTask);
 			break;
 		case 2:
-			printTask(firstTask->nextTask);
+			printAllTasks(firstTask, lastTask);
 			break;
 		case 3:
-			lastTask = newTaskElement(lastTask, idTraker, "test", 4, 5);
+			if (firstTask->ID == 0) {
+				lastTask = newTaskElement(firstTask, idTraker, "test", 4, 5);
+				printTask(firstTask);
+				printTask(lastTask);
+			} else {
+				tmpTask = lastTask;
+				lastTask = newTaskElement(lastTask, idTraker, "test", 4, 5);
+				printTask(firstTask);
+				printTask(tmpTask);
+				printTask(lastTask);
+			}
 			idTraker += 1;
 			break;
 		default:
@@ -68,23 +80,19 @@ int getChoice() {
 	return res;
 }
 
-void printAllTasks(Task *first) {
+void printAllTasks(Task *first, Task *last) {
 	printf("The list of task is: \n\r");
 	printf("| ID + PRIORITA\' + NOME TASK + ESECUZ. RIMANENTI | \n");
-	if (first->ID != 0) {
-		for (Task *i = first; i == NULL; i = i->nextTask) {
-			printf("+----+-----------+-----------+-------------------+ \n\r");
-			printf("| %d + %d         + %s        + %d                | \n\r",
-					i->ID, i->priority, i->nameTask, i->remainingExe);
-			printf("+----+-----------+-----------+-------------------+ \n\r");
-		}
+	Task* tmp = first;
+	while (tmp != last) {
+		printTask(tmp);
+		tmp = (*tmp).nextTask;
 	}
 }
 
 void printTask(Task *thisTask) {
-	printf("This Task have the value of:\n\r");
-	printf("| ID + PRIORITA\' + NOME TASK + ESECUZ. RIMANENTI | \n\r");
-	printf("| %d  + %d         + %s          + %d                 | \n\r",
+	printf("+----+-----------+-----------+-------------------+ \n\r");
+	printf("| %d  + %d         + %s        + %d                | \n\r",
 			thisTask->ID, thisTask->priority, thisTask->nameTask,
 			thisTask->remainingExe);
 	printf("+----+-----------+-----------+-------------------+ \n\r");
@@ -96,6 +104,6 @@ Task* newTaskElement(Task *actualTask, int idT, char nameT[], int priorityT,
 	strcpy(actualTask->nameTask, nameT);
 	actualTask->priority = priorityT;
 	actualTask->remainingExe = execT;
-	actualTask->nextTask = malloc(sizeof(Task));
-	return actualTask->nextTask;
+	(*actualTask).nextTask = malloc(sizeof(Task));
+	return (*actualTask).nextTask;
 }
