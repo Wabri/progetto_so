@@ -17,9 +17,6 @@ typedef struct TaskElement {
 	struct TaskElement *nextTask;
 } Task;
 
-void deleteTask(Task*);
-int executeTask(Task*);
-
 int setExeNumber() {
 	int exeNum = 0;
 	do {
@@ -115,14 +112,4 @@ void printListTasks(Task *first, Task *last, char pol) {
 		printTask(tmp);
 		tmp = (*tmp).nextTask;
 	}
-}
-
-int executeTaskID(Task* actualTask) {
-	actualTask = selectTask(actualTask);
-	actualTask->remainingExe = actualTask->remainingExe - 1;
-	if (actualTask->remainingExe == 0) {
-		deleteTask(actualTask);
-		return 0;
-	}
-	return actualTask->remainingExe;
 }

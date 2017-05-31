@@ -20,25 +20,17 @@ int runScheduling() {
 	Task *firstTask = malloc(sizeof(Task));
 	Task *lastTask = NULL; // the last Task is always empty
 	Task *tmpTask;
-	printf(".......................................................................\n\r");
+	printf(
+			".......................................................................\n\r");
 	printf("               This is a process scheduler\n\r");
-	printf(".......................................................................\n\r");
+	printf(
+			".......................................................................\n\r");
 	while (flag == 1) {
 		switch (getChoice()) {
 		case 0:
 			printf("Bye!\n\r");
 			return 0;
 		case 1:
-			if (isEmptyTaskList(firstTask) == 1) {
-				break;
-			}
-			printf("| ID + PRIORITA\' + NOME TASK + ESECUZ. RIMANENTI | \n\r");
-			printf("This task has the value of:\n\r");
-			printTask(firstTask);
-			break;
-		case 2:
-			break;
-		case 3:
 			if (firstTask->ID == 0) {
 				lastTask = newTaskElement(firstTask, idTraker);
 			} else {
@@ -46,19 +38,24 @@ int runScheduling() {
 			}
 			idTraker += 1;
 			break;
+		case 2:
+//			executeTask(firstTask);
+			break;
+		case 3:
+//			executeTask(selectTask(firstTask);
+//			riordinare la lista dei task
+			break;
 		case 4:
-			executeTask(firstTask, policy);
+//			deleteTask(firstTask);
+//			riordinare la lista dei task
 			break;
 		case 5:
-			deleteTask(firstTask);
+			modifyPriority(firstTask);
 			break;
 		case 6:
 			policy = switchPolicy(policy);
 			break;
 		case 7:
-			modifyPriority(firstTask);
-			break;
-		case 8:
 			modifyExecNumb(firstTask);
 			break;
 		default:
@@ -74,10 +71,9 @@ int runScheduling() {
 
 int getChoice() {
 	printf("\n\rYou can choose to:\n\r");
-	printf(" 0) Exit\n\r 1) Print a task\n\r 2) Print all tasks\n\r");
-	printf(" 3) Create a new task\n\r 4) Execute Task\n\r");
-	printf(" 5) Delete Task\n\r 6) Switch policy (default : PRIORITY)\n\r");
-	printf(" 7) Modify priority\n\r 8) Modify number of remaining execution");
+	printf(" 0) Exit\n\r 1) Create a new task\n\r 2) Execute head Task\n\r");
+	printf(" 3) Execute id Task\n\r 4)Delete Task\n\r 5) Modify PRIORITY of Task\n\r");
+	printf(" 6) Switch policy (default : PRIORITY)\n\r 7) Modify REMAINING EXECUTIONS of Task");
 	int res = 0;
 	printf("\n\r> ");
 	scanf("%i", &res);
