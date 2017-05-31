@@ -144,13 +144,14 @@ void getTaskName(Task *actualTask){
 }
 
 int getChoice() {
-	printf("\nYou can choose to:\n\r");
-	printf(
-			" 0) Exit\n\r 1) Print a task\n\r 2) Print all tasks\n\r 3) Create a new task\n\r 4) Execute a task\n\r 5) Delete a task\n\r");
-	int res = 0;
-	printf("> ");
-	scanf("%i", &res);
-	return res;
+	printf("\n\rYou can choose to:\n\r");
+		printf(" 0) Exit\n\r 1) Print a task\n\r 2) Print all tasks\n\r");
+		printf(" 3) Create a new task\n\r 4) Execute Task\n\r");
+		printf(" 5) Delete Task\n\r 6) Switch policy\n\r");
+		int res = 0;
+		printf("> ");
+		scanf("%i", &res);
+		return res;
 }
 
 void printAllTasks(Task *first, Task *last) {
