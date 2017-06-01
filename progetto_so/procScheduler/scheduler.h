@@ -20,7 +20,6 @@ int getChoice();
 void printAllTasks(Task*, Task*, char);
 void printTask(Task*);
 int checkEmptyList(Task*);
-void deleteTask(Task*);
 int execTask(Task*);
 Task* selectTask(Task*);
 int getExeNumber();
@@ -28,7 +27,7 @@ int getPriority();
 void getTaskName(Task*);
 Task* newTaskElement(Task*, int);
 int executeTask(Task*, char);
-void deleteTask(Task*);
+void deleteTask(Task**);
 void modifyExecNumb(Task*);
 void modifyPriority(Task*);
 char switchPolicy(char);
@@ -44,6 +43,7 @@ int runScheduling() {
 	Task *firstTask = malloc(sizeof(Task));
 	Task *lastTask = NULL; // the last Task is always empty
 	Task *tmpTask;
+	Task **list = &firstTask;
 	printf("%s", header);
 	printf("               This is a process scheduler\n\r");
 	printf("%s", header);
@@ -74,7 +74,7 @@ int runScheduling() {
 			executeTask(firstTask, policy);
 			break;
 		case 5:
-			deleteTask(firstTask);
+			deleteTask(list);
 			break;
 		case 6:
 			policy = switchPolicy(policy);
@@ -100,24 +100,50 @@ Task* selectTask(Task* t) {
 	int id;
 	printf("Seleziona il task...\nInserisci l'ID : ");
 	scanf("%d", &id);
-	while (t->ID != id)
+	while (t->ID != id){
+		if(t->nextTask==NULL){
+			printf("Throw some error..");
+			return NULL;
+		}
 		t = t->nextTask;
+	}
 	return t;
 }
 
-void deleteTask(Task* actualTask) {
-	return;
+void deleteTask(Task **list) {
+	Task *currT, *prevT;
+	int id;
+	printf("Seleziona il task...\nInserisci l'ID : ");
+	scanf("%d", &id);
+	/*for first task, indicate there is no previous */
+	prevT = NULL;
+	for (currT = *list; currT != NULL; prevT = currT, currT = currT->nextTask) {
+		if (currT->ID == id) {  /* Found it. */
+      			if (prevT == NULL) {
+        		/* Fix beginning pointer. */
+        		*list = currT->nextTask;
+      			} else {
+        		/*
+         		* Fix previous node's next to
+         		* skip over the removed node.
+         		*/
+        		prevT->nextTask = currT->nextTask;
+      			}
+		free(currT);
+		return;
+		}
+	}
 }
 
 int executeTask(Task* actualTask, char pol) {
-	return NULL;
+	return 0;
 }
 
 int executeTaskID(Task* actualTask) {
 	actualTask = selectTask(actualTask);
 	actualTask->remainingExe = actualTask->remainingExe - 1;
 	if (actualTask->remainingExe == 0) {
-		deleteTask(actualTask);
+		deleteTask(&actualTask);
 		return 0;
 	}
 	return actualTask->remainingExe;
