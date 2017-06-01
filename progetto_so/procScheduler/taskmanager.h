@@ -17,6 +17,18 @@ typedef struct TaskElement {
 	struct TaskElement *nextTask;
 } Task;
 
+int setExeNumber(void);
+int setPriority(void);
+void setTaskName(Task*);
+int isEmptyTaskList(Task*);
+Task* selectTask(Task*);
+void modifyPriority(Task*);
+void modifyExecNumb(Task*);
+Task* newTaskElement(Task*,int);
+void printTask(Task*);
+void printListTask(Task*, Task*, char);
+void deleteTask(Task**);
+
 int setExeNumber() {
 	int exeNum = 0;
 	do {
@@ -136,3 +148,4 @@ void deleteTask(Task **list) {
 			return;
 		}
 	}
+}

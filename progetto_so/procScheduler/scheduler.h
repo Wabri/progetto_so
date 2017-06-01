@@ -7,11 +7,14 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-
 #include "taskmanager.h"
 
-int getChoice();
-char switchPolicy(char);
+int runScheduling(void);
+int getChoice(void);
+char switchPolicy(char pol);
+void sortListPriority(Task**, Task*);
+void swapTasks(Task**,Task**,Task**b);
+Task* getPreviousTask(Task*,Task*);
 
 int runScheduling() {
 	int idTraker = 1;
@@ -47,7 +50,6 @@ int runScheduling() {
 			break;
 		case 4:
 //			deleteTask(firstTask);
-//			riordinare la lista dei task
 			break;
 		case 5:
 			modifyPriority(firstTask);
