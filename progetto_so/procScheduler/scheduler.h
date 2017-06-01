@@ -31,6 +31,9 @@ void deleteTask(Task**);
 void modifyExecNumb(Task*);
 void modifyPriority(Task*);
 char switchPolicy(char);
+void sortListPriority(Task**,Task*);
+void swapTasks(Task**,Task**,Task**);
+Task* getPreviousTask(Task*,Task*);
 
 char* sepa = "+----+-----------+-----------+-------------------+ \n\r";
 
@@ -45,7 +48,7 @@ int runScheduling() {
 	Task *tmpTask;
 	Task **list = &firstTask;
 	printf("%s", header);
-	printf("               This is a process scheduler\n\r");
+	printf("\t\t\tThis is a process scheduler\n\r");
 	printf("%s", header);
 	while (flag == 1) {
 		switch (getChoice()) {
@@ -85,6 +88,10 @@ int runScheduling() {
 		case 8:
 			modifyExecNumb(firstTask);
 			break;
+		case 9:
+			printf("Diahane");
+			sortListPriority(list,firstTask);
+			break;
 		default:
 			flag = 0;
 			break;
@@ -117,8 +124,10 @@ void deleteTask(Task **list) {
 	scanf("%d", &id);
 	/*for first task, indicate there is no previous */
 	prevT = NULL;
+	
 	for (currT = *list; currT != NULL; prevT = currT, currT = currT->nextTask) {
-		if (currT->ID == id) {  /* Found it. */
+		if (currT->ID == id) {
+			/* Found it. */
       			if (prevT == NULL) {
         		/* Fix beginning pointer. */
         		*list = currT->nextTask;
@@ -135,7 +144,75 @@ void deleteTask(Task **list) {
 	}
 }
 
-int executeTask(Task* actualTask, char pol) {
+void sortListPriority(Task **list,Task *firstTask){
+	Task *currT, *prevT;
+	prevT = NULL;
+	printf("mingue");
+	for (currT = *list; currT != NULL; prevT = currT, currT = currT->nextTask) {
+		if ((currT->nextTask->priority) > (currT->priority)) {
+		printf("mingue");
+		swapTasks(&firstTask,&currT,&(currT->nextTask));
+		}
+	}
+	return;
+}
+
+void swapTasks(Task **head, Task **a, Task **b){
+	// first check if a agrgument is null                 
+	if( (*head) == NULL ||               // Empty list         
+		(*a) == NULL || (*b) == NULL){     // one node is null  
+	// Nothing to swap, just return 
+	printf("\n Nothing to swap, just return \n");
+	return;
+	}     
+	// find previos nodes
+	Task* prevA = getPreviousTask(*head, *a);
+	Task* prevB = getPreviousTask(*head, *b);
+	
+	//Now swap previous node's next
+	if(prevA) { 
+		prevA->nextTask = (*b); // a's previous become b's previous, and 
+	}	
+	if(prevB) {
+		prevB->nextTask = (*a); // b's previous become a's previous
+	}
+	
+	//Now swap next fiels of candidate nodes  
+	Task* temp = NULL;  
+	temp = (*a)->nextTask;
+	(*a)->nextTask = (*b)->nextTask;
+	(*b)->nextTask = temp;
+	//change head: if any node was a head 
+	if((*head)==(*a)){ 
+		*head = *b;
+	} else { 
+		if((*head)==(*b)) {  
+			*head = *a;
+		}
+	}	
+	return;
+}
+
+Task* getPreviousTask(Task* head, Task* a){
+	if(head == a){
+	// a is the first task 
+		return NULL;
+	}
+	Task* temp = head; 		// temp is current task
+	Task* prevA = NULL; 
+
+	while(temp && temp!=a){ 	//search while not reach to end or the task
+		prevA = temp;          // find previous task   
+		temp = temp->nextTask;
+	}
+	if(temp!=a){			// node[a] not present in list
+		fprintf(stderr, "\n error: node not found!\n");
+		exit(EXIT_FAILURE); 	// bad technique to exit()
+	}
+	return prevA;   
+}
+
+int executeTask(Task *t, char p) {
 	return 0;
 }
 
@@ -192,7 +269,8 @@ int getChoice() {
 	printf(" 0) Exit\n\r 1) Print a task\n\r 2) Print all tasks\n\r");
 	printf(" 3) Create a new task\n\r 4) Execute Task\n\r");
 	printf(" 5) Delete Task\n\r 6) Switch policy (default : PRIORITY)\n\r");
-	printf(" 7) Modify priority\n\r 8) Modify number of remaining execution");
+	printf(" 7) Modify priority\n\r 8) Modify number of remaining execution\n\r");
+	printf(" 9) Ordina la lista per priorita'\n\r");
 	int res = 0;
 	printf("\n\r> ");
 	scanf("%i", &res);
