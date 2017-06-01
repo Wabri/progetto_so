@@ -13,8 +13,8 @@ int runScheduling(void);
 int getChoice(void);
 char switchPolicy(char pol);
 void sortListPriority(Task**, Task*);
-void swapTasks(Task**,Task**,Task**b);
-Task* getPreviousTask(Task*,Task*);
+void swapTasks(Task**, Task**, Task**b);
+Task* getPreviousTask(Task*, Task*);
 
 int runScheduling() {
 	int idTraker = 1;
@@ -75,7 +75,7 @@ int getChoice() {
 	printf("\n\rYou can choose to:\n\r");
 	printf(" 0) Exit\n\r 1) Create a new task\n\r 2) Execute head Task\n\r");
 	printf(
-			" 3) Execute id Task\n\r 4)Delete Task\n\r 5) Modify PRIORITY of Task\n\r");
+			" 3) Execute id Task\n\r 4) Delete Task\n\r 5) Modify PRIORITY of Task\n\r");
 	printf(
 			" 6) Switch policy (default : PRIORITY)\n\r 7) Modify REMAINING EXECUTIONS of Task");
 	int res = 0;

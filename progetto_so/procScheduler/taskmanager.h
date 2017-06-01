@@ -24,7 +24,7 @@ int isEmptyTaskList(Task*);
 Task* selectTask(Task*);
 void modifyPriority(Task*);
 void modifyExecNumb(Task*);
-Task* newTaskElement(Task*,int);
+Task* newTaskElement(Task*, int);
 void printTask(Task*);
 void printListTask(Task*, Task*, char);
 void deleteTask(Task**);
