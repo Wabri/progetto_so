@@ -88,7 +88,6 @@ Task* newTaskElement(Task *actualTask, int idT) {
 	return (*actualTask).nextTask;
 }
 
-
 void printTask(Task *thisTask) {
 	printf("| %d  + %d         + %s        + %d                | \n\r",
 			thisTask->ID, thisTask->priority, thisTask->nameTask,
@@ -113,3 +112,27 @@ void printListTasks(Task *first, Task *last, char pol) {
 		tmp = (*tmp).nextTask;
 	}
 }
+
+void deleteTask(Task **list) {
+	Task *currT, *prevT;
+	int id;
+	printf("Seleziona il task...\nInserisci l'ID : ");
+	scanf("%d", &id);
+	/*for first task, indicate there is no previous */
+	prevT = NULL;
+	for (currT = *list; currT != NULL; prevT = currT, currT = currT->nextTask) {
+		if (currT->ID == id) { /* Found it. */
+			if (prevT == NULL) {
+				/* Fix beginning pointer. */
+				*list = currT->nextTask;
+			} else {
+				/*
+				 * Fix previous node's next to
+				 * skip over the removed node.
+				 */
+				prevT->nextTask = currT->nextTask;
+			}
+			free(currT);
+			return;
+		}
+	}
