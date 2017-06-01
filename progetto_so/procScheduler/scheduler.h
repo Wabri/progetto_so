@@ -147,11 +147,9 @@ void deleteTask(Task **list) {
 void sortListPriority(Task **list,Task *firstTask){
 	Task *currT, *prevT;
 	prevT = NULL;
-	printf("mingue");
 	for (currT = *list; currT != NULL; prevT = currT, currT = currT->nextTask) {
 		if ((currT->nextTask->priority) > (currT->priority)) {
-		printf("mingue");
-		swapTasks(&firstTask,&currT,&(currT->nextTask));
+		swapTasks(&firstTask,&currT,&(currT->nextTask)); // LOOPS FOREVER
 		}
 	}
 	return;
@@ -178,8 +176,7 @@ void swapTasks(Task **head, Task **a, Task **b){
 	}
 	
 	//Now swap next fiels of candidate nodes  
-	Task* temp = NULL;  
-	temp = (*a)->nextTask;
+	Task* temp = (*a)->nextTask;
 	(*a)->nextTask = (*b)->nextTask;
 	(*b)->nextTask = temp;
 	//change head: if any node was a head 
