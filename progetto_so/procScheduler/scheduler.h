@@ -47,8 +47,10 @@ int runScheduling() {
 			}
 			break;
 		case 3:
-//			executeTask(selectTask(firstTask);
-//			riordinare la lista dei task
+			tmpTask = selectTask(firstTask);
+			if (executeTask(tmpTask)==0) {
+				firstTask = deleteTask(firstTask,tmpTask,lastTask);
+			}
 			break;
 		case 4:
 			firstTask = deleteTask(firstTask, selectTask(firstTask), lastTask);
