@@ -42,7 +42,9 @@ int runScheduling() {
 			idTraker += 1;
 			break;
 		case 2:
-//			executeTask(firstTask);
+			if (executeTask(firstTask) == 0) {
+				firstTask = deleteTask(firstTask,firstTask,lastTask);
+			}
 			break;
 		case 3:
 //			executeTask(selectTask(firstTask);
