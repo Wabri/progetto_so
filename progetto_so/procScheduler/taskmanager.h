@@ -75,6 +75,10 @@ Task* selectTask(Task* actualTask) {
 	scanf("%d", &id);
 	while (actualTask->ID != id) {
 		actualTask = actualTask->nextTask;
+		if (actualTask == NULL) {
+			printf("\n\rThere is no Task with this ID\n\r");
+			return actualTask;
+		}
 	}
 	return actualTask;
 }
@@ -126,23 +130,26 @@ void printListTasks(Task *first, Task *last, char pol) {
 }
 
 Task* deleteTask(Task *first, Task *thisTask, Task *last) {
-	Task *tmpTask = first;
-	if (thisTask == first) {
-		tmpTask = thisTask->nextTask;
-		thisTask->ID = thisTask->priority = thisTask->remainingExe = 0;
-		strcpy(thisTask->nameTask, "\0");
-		thisTask->nextTask = NULL;
-		return tmpTask;
-	} else {
-		while (tmpTask->nextTask == NULL) {
-			if (tmpTask->nextTask == thisTask) {
-				tmpTask->nextTask = thisTask->nextTask;
-				thisTask->ID = thisTask->priority = thisTask->remainingExe = 0;
-				strcpy(thisTask->nameTask, "\0");
-				thisTask->nextTask = NULL;
-				return first;
+	if (thisTask != NULL) {
+		Task *tmpTask = first;
+		if (thisTask == first) {
+			tmpTask = thisTask->nextTask;
+			thisTask->ID = thisTask->priority = thisTask->remainingExe = 0;
+			strcpy(thisTask->nameTask, "\0");
+			thisTask->nextTask = NULL;
+			return tmpTask;
+		} else {
+			while (tmpTask->nextTask == NULL) {
+				if (tmpTask->nextTask == thisTask) {
+					tmpTask->nextTask = thisTask->nextTask;
+					thisTask->ID = thisTask->priority = thisTask->remainingExe =
+							0;
+					strcpy(thisTask->nameTask, "\0");
+					thisTask->nextTask = NULL;
+					return first;
+				}
+				tmpTask = tmpTask->nextTask;
 			}
-			tmpTask = tmpTask->nextTask;
 		}
 	}
 	printf("There is no Task to delete!!");
