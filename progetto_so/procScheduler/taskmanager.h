@@ -27,7 +27,7 @@ void modifyExecNumb(Task*);
 Task* newTaskElement(Task*, int);
 void printTask(Task*);
 void printListTask(Task*, Task*, char);
-void deleteTask(Task**);
+Task* deleteTask(Task*, Task*, Task*);
 
 int setExeNumber() {
 	int exeNum = 0;
@@ -125,27 +125,51 @@ void printListTasks(Task *first, Task *last, char pol) {
 	}
 }
 
-void deleteTask(Task **list) {
-	Task *currT, *prevT;
-	int id;
-	printf("Seleziona il task...\nInserisci l'ID : ");
-	scanf("%d", &id);
-	/*for first task, indicate there is no previous */
-	prevT = NULL;
-	for (currT = *list; currT != NULL; prevT = currT, currT = currT->nextTask) {
-		if (currT->ID == id) { /* Found it. */
-			if (prevT == NULL) {
-				/* Fix beginning pointer. */
-				*list = currT->nextTask;
-			} else {
-				/*
-				 * Fix previous node's next to
-				 * skip over the removed node.
-				 */
-				prevT->nextTask = currT->nextTask;
+//void deleteTask(Task **list) {
+//	Task *currT, *prevT;
+//	int id;
+//	printf("Seleziona il task...\nInserisci l'ID : ");
+//	scanf("%d", &id);
+//	/*for first task, indicate there is no previous */
+//	prevT = NULL;
+//	for (currT = *list; currT != NULL; prevT = currT, currT = currT->nextTask) {
+//		if (currT->ID == id) { /* Found it. */
+//			if (prevT == NULL) {
+//				/* Fix beginning pointer. */
+//				*list = currT->nextTask;
+//			} else {
+//				/*
+//				 * Fix previous node's next to
+//				 * skip over the removed node.
+//				 */
+//				prevT->nextTask = currT->nextTask;
+//			}
+//			free(currT);
+//			return;
+//		}
+//	}
+//}
+
+Task* deleteTask(Task *first, Task *thisTask, Task *last) {
+	Task *tmpTask = first;
+	if (thisTask == first) {
+		tmpTask = thisTask->nextTask;
+		thisTask->ID = thisTask->priority = thisTask->remainingExe = 0;
+		strcpy(thisTask->nameTask, "\0");
+		thisTask->nextTask = NULL;
+		return tmpTask;
+	} else {
+		while (tmpTask->nextTask == NULL) {
+			if (tmpTask->nextTask == thisTask) {
+				tmpTask->nextTask = thisTask->nextTask;
+				thisTask->ID = thisTask->priority = thisTask->remainingExe = 0;
+				strcpy(thisTask->nameTask, "\0");
+				thisTask->nextTask = NULL;
+				return first;
 			}
-			free(currT);
-			return;
+			tmpTask = tmpTask->nextTask;
 		}
 	}
+	printf("There is no Task to delete!!");
+	return first;
 }
