@@ -125,31 +125,6 @@ void printListTasks(Task *first, Task *last, char pol) {
 	}
 }
 
-//void deleteTask(Task **list) {
-//	Task *currT, *prevT;
-//	int id;
-//	printf("Seleziona il task...\nInserisci l'ID : ");
-//	scanf("%d", &id);
-//	/*for first task, indicate there is no previous */
-//	prevT = NULL;
-//	for (currT = *list; currT != NULL; prevT = currT, currT = currT->nextTask) {
-//		if (currT->ID == id) { /* Found it. */
-//			if (prevT == NULL) {
-//				/* Fix beginning pointer. */
-//				*list = currT->nextTask;
-//			} else {
-//				/*
-//				 * Fix previous node's next to
-//				 * skip over the removed node.
-//				 */
-//				prevT->nextTask = currT->nextTask;
-//			}
-//			free(currT);
-//			return;
-//		}
-//	}
-//}
-
 Task* deleteTask(Task *first, Task *thisTask, Task *last) {
 	Task *tmpTask = first;
 	if (thisTask == first) {

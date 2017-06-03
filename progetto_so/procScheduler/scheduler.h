@@ -49,7 +49,7 @@ int runScheduling() {
 //			riordinare la lista dei task
 			break;
 		case 4:
-			firstTask = deleteTask(firstTask,selectTask(firstTask),lastTask);
+			firstTask = deleteTask(firstTask, selectTask(firstTask), lastTask);
 			break;
 		case 5:
 			modifyPriority(firstTask);
