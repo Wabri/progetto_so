@@ -43,15 +43,15 @@ int setExeNumber() {
 }
 
 int setPriority() {
-	int p = 0;
+	int priority = 0;
 	do {
-		printf("\n\rInserisci la priorita' richiesta : ");
-		scanf("%i", &p);
-		if (((p < 0) || (p > 10))) {
-			printf("\n\rErrore, la priorita' blablabla \n\r");
+		printf("\n\rInsert priority value: ");
+		scanf("%i", &priority);
+		if (((priority < 0) || (priority > 10))) {
+			printf("\n\rPriority must have value between 0 and 10\n\r");
 		}
-	} while ((p < 0) || (p > 10));
-	return p;
+	} while ((priority < 0) || (priority > 10));
+	return priority;
 }
 
 void setTaskName(Task *actualTask) {
@@ -84,15 +84,21 @@ Task* selectTask(Task* actualTask) {
 	return actualTask;
 }
 
-void modifyPriority(Task *t) {
-	t = selectTask(t);
-	t->priority = setPriority();
+void modifyPriority(Task *thisTask) {
+	thisTask = selectTask(thisTask);
+	if (thisTask == NULL) {
+		return;
+	}
+	thisTask->priority = setPriority();
 	return;
 }
 
-void modifyExecNumb(Task *t) {
-	t = selectTask(t);
-	t->remainingExe = setExeNumber();
+void modifyExecNumb(Task *thisTask) {
+	thisTask = selectTask(thisTask);
+	if (thisTask == NULL) {
+		return;
+	}
+	thisTask->remainingExe = setExeNumber();
 	return;
 }
 
