@@ -28,6 +28,7 @@ Task* newTaskElement(Task*, int);
 void printTask(Task*);
 void printListTask(Task*, Task*, char);
 Task* deleteTask(Task*, Task*, Task*);
+int executeTask(Task*);
 
 int setExeNumber() {
 	int exeNum = 0;
@@ -154,4 +155,16 @@ Task* deleteTask(Task *first, Task *thisTask, Task *last) {
 	}
 	printf("There is no Task to delete!!");
 	return first;
+}
+
+int executeTask(Task *thisTask) {
+	if (thisTask != NULL) {
+		thisTask->remainingExe -= 1;
+		return thisTask->remainingExe;
+	} else if (thisTask->remainingExe == 0) {
+		printf("This task don\'t have no more execution to done");
+		return 0;
+	}
+	printf("There is no Task to execute!!");
+	return 0;
 }
