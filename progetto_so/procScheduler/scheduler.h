@@ -12,7 +12,10 @@
 int runScheduling(void);
 int getChoice(void);
 char switchPolicy(char pol);
-void sortListPriority(Task**, Task*);
+void sortTaskList(Task*, Task*, char);
+void sortListByPriority(Task*, Task*);
+void sortListByExecution(Task*, Task*);
+void swapTask(Task*, Task*, Task*);
 void swapTasks(Task**, Task**, Task**b);
 Task* getPreviousTask(Task*, Task*);
 
@@ -38,18 +41,23 @@ int runScheduling() {
 				lastTask = newTaskElement(firstTask, idTraker);
 			} else {
 				lastTask = newTaskElement(lastTask, idTraker);
+				if (policy == 'p') {
+					sortListByPriority(firstTask, lastTask);
+				} else if (policy == 'e') {
+					sortListByExecution(firstTask, lastTask);
+				}
 			}
 			idTraker += 1;
 			break;
 		case 2:
 			if (executeTask(firstTask) == 0) {
-				firstTask = deleteTask(firstTask,firstTask,lastTask);
+				firstTask = deleteTask(firstTask, firstTask, lastTask);
 			}
 			break;
 		case 3:
 			tmpTask = selectTask(firstTask);
-			if (executeTask(tmpTask)==0) {
-				firstTask = deleteTask(firstTask,tmpTask,lastTask);
+			if (executeTask(tmpTask) == 0) {
+				firstTask = deleteTask(firstTask, tmpTask, lastTask);
 			}
 			break;
 		case 4:
@@ -57,12 +65,19 @@ int runScheduling() {
 			break;
 		case 5:
 			modifyPriority(firstTask);
+			sortListByPriority(firstTask, lastTask);
 			break;
 		case 6:
 			policy = switchPolicy(policy);
+			if (policy == 'p') {
+				sortListByPriority(firstTask, lastTask);
+			} else if (policy == 'e') {
+				sortListByExecution(firstTask, lastTask);
+			}
 			break;
 		case 7:
 			modifyExecNumb(firstTask);
+			sortListByExecution(firstTask, lastTask);
 			break;
 		default:
 			flag = 0;
@@ -102,6 +117,69 @@ char switchPolicy(char pol) {
 		return 'p';
 	}
 	return 'p';
+}
+
+void sortTaskList(Task* first, Task* last, char pol) {
+	if (pol == 'p') {
+		sortListByPriority(first, last);
+	} else if (pol == 'e') {
+		sortListByExecution(first, last);
+	}
+}
+
+void sortListByPriority(Task *first, Task *last) {
+	Task *tmp;
+	Task *previous;
+	int flag = 0;
+	while (!flag) {
+		tmp = previous = first;
+		flag = 1;
+		while (tmp->nextTask->ID != 0) {
+			if (tmp->nextTask->priority > tmp->priority) {
+				if (tmp == first) {
+					first = tmp->nextTask;
+				}
+				swapTask(previous, tmp, tmp->nextTask);
+				flag = 0;
+			}
+			if (tmp->nextTask->ID != 0) {
+				tmp = tmp->nextTask;
+				previous = tmp;
+
+			}
+		}
+	}
+}
+
+void sortListByExecution(Task* first, Task *last) {
+	Task *tmp;
+	Task *previous;
+	int flag = 0;
+	while (!flag) {
+		tmp = previous = first;
+		flag = 1;
+		while (tmp->nextTask->ID != 0) {
+			if (tmp->nextTask->remainingExe < tmp->remainingExe) {
+				if (tmp == first) {
+					first = tmp->nextTask;
+				}
+				swapTask(previous, tmp, tmp->nextTask);
+				flag = 0;
+			}
+			if (tmp->nextTask->ID != 0) {
+				previous = tmp;
+				tmp = tmp->nextTask;
+			}
+		}
+	}
+}
+
+void swapTask(Task *previous, Task *toMove, Task *following) {
+	if (previous == toMove) {
+		previous->nextTask = following;
+	}
+	toMove->nextTask = following->nextTask;
+	following->nextTask = toMove;
 }
 
 void sortListPriority(Task **list, Task *firstTask) {
