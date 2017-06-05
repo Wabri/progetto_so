@@ -26,7 +26,7 @@ void modifyPriority(Task*);
 void modifyExecNumb(Task*);
 Task* newTaskElement(Task*, int);
 void printTask(Task*);
-void printListTask(Task*, Task*, char);
+void printListTasks(Task*, Task*);
 Task* deleteTask(Task*, Task*, Task*);
 int executeTask(Task*);
 
@@ -118,14 +118,8 @@ void printTask(Task *thisTask) {
 	printf("+----+-----------+-----------+-------------------+\n\r");
 }
 
-void printListTasks(Task *first, Task *last, char pol) {
-	printf("\n\rScheduling Policy: ");
-	if (pol == 'p') {
-		printf("PRIORITY ");
-	} else if (pol == 'e') {
-		printf("REMAINING EXECUTIONS ");
-	}
-	printf("\nThe list of tasks is: \n\r");
+void printListTasks(Task *first, Task *last) {
+	printf("\n\rThe list of tasks is: \n\r");
 	printf("+----+-----------+-----------+-------------------+\n\r");
 	printf("| ID + PRIORITA\' + NOME TASK + ESECUZ. RIMANENTI |\n\r");
 	printf("+----+-----------+-----------+-------------------+\n\r");
