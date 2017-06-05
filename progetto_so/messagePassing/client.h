@@ -7,7 +7,7 @@
 #include <sys/un.h>
 #define SOCK_PATH "echo_socket"
 
-int client(void) {
+void client() {
 	int s, t, len;
 	struct sockaddr_un remote;
 	char str[100];
@@ -40,5 +40,5 @@ int client(void) {
 			}
 	}
 	close(s);
-	return 0;
+	return;
 }

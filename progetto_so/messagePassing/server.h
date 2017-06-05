@@ -6,7 +6,8 @@
 #include <sys/socket.h>
 #include <sys/un.h>
 #define SOCK_PATH "echo_socket"
-int server(void) {
+
+void server() {
 	int s, s2, t, len;
 	struct sockaddr_un local, remote;
 	char str[100];
@@ -51,5 +52,5 @@ int server(void) {
 	while (!done);
 	close(s2);
 	}
-	return 0;
+	return;
 }
