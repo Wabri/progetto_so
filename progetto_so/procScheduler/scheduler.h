@@ -2,7 +2,7 @@
  * scheduler.h
  *
  *  Created on: 25 mag 2017
- *      Author: wabri
+ *      Authors: wabri, pagano
  */
 #include <string.h>
 #include <stdio.h>
@@ -105,12 +105,12 @@ int runScheduling() {
 }
 
 int getChoice() {
-	printf("\n\rYou can choose to:\n\r");
-	printf(" 0) Exit\n\r 1) Create a new task\n\r 2) Execute head Task\n\r");
+	printf("\n\rPlease select an option:\n\r");
+	printf(" 0) Exit\n\r 1) Create a new task\n\r 2) Execute the task on the top of the list\n\r");
 	printf(
-			" 3) Execute id Task\n\r 4) Delete Task\n\r 5) Modify PRIORITY of Task\n\r");
+			" 3) Execute a task\n\r 4) Delete a task\n\r 5) Modify the PRIORITY of a task\n\r");
 	printf(
-			" 6) Switch policy (default : PRIORITY)\n\r 7) Modify REMAINING EXECUTIONS of Task");
+			" 6) Switch policy (default : PRIORITY)\n\r 7) Modify the REMAINING EXECUTIONS of a task");
 	int res = 0;
 	printf("\n\r> ");
 	scanf("%i", &res);

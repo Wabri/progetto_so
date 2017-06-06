@@ -2,7 +2,7 @@
  * taskmanager.h
  *
  *  Created on: 31 mag 2017
- *      Author: wabri
+ *      Authors: wabri, pagano
  */
 
 #include <string.h>
@@ -33,10 +33,10 @@ int executeTask(Task*);
 int setExeNumber() {
 	int exeNum = 0;
 	do {
-		printf("\n\rInserisci il numero di esecuzioni rimanenti : ");
+		printf("\n\rInsert the number of remaning executions : ");
 		scanf("%i", &exeNum);
 		if ((exeNum < 0) || (exeNum > 99)) {
-			printf("\n\rErrore, il numex blabla \n\r");
+			printf("\n\rError! It must be a number between 1 and 99. \n\r");
 		}
 	} while ((exeNum < 0) || (exeNum > 99));
 	return exeNum;
@@ -45,10 +45,10 @@ int setExeNumber() {
 int setPriority() {
 	int priority = 0;
 	do {
-		printf("\n\rInsert priority value: ");
+		printf("\n\rInsert the priority (ascending order)");
 		scanf("%i", &priority);
 		if (((priority < 0) || (priority > 10))) {
-			printf("\n\rPriority must have value between 0 and 10\n\r");
+			printf("\n\rError! It must be a number between 1 and 9\n\r");
 		}
 	} while ((priority < 0) || (priority > 10));
 	return priority;
@@ -56,7 +56,7 @@ int setPriority() {
 
 void setTaskName(Task *actualTask) {
 	char name[8];
-	printf("\n\rAssegna un nome a questo task (max 8 caratteri) : ");
+	printf("\n\rName this task (max 8 chars) : ");
 	scanf("%s", name);
 	strcpy(actualTask->nameTask, name);
 	return;
@@ -72,12 +72,12 @@ int isEmptyTaskList(Task *actualTask) {
 
 Task* selectTask(Task* actualTask) {
 	int id;
-	printf("Seleziona il task...\nInserisci l'ID : ");
+	printf("Select the task...\nInsert the ID : ");
 	scanf("%d", &id);
 	while (actualTask->ID != id) {
 		actualTask = actualTask->nextTask;
 		if (actualTask == NULL) {
-			printf("\n\rThere is no Task with this ID\n\r");
+			printf("\n\rError! No tasks with this ID!\n\r");
 			return actualTask;
 		}
 	}
@@ -119,7 +119,6 @@ void printTask(Task *thisTask) {
 }
 
 void printListTasks(Task *first) {
-	printf("\n\rThe list of tasks is: \n\r");
 	printf("+----+-----------+-----------+-------------------+\n\r");
 	printf("| ID + PRIORITA\' + NOME TASK + ESECUZ. RIMANENTI |\n\r");
 	printf("+----+-----------+-----------+-------------------+\n\r");
@@ -153,7 +152,7 @@ Task* deleteTask(Task *first, Task *thisTask) {
 			}
 		}
 	}
-	printf("There is no Task to delete!!");
+	printf("There is no task to delete!");
 	return first;
 }
 
@@ -162,9 +161,9 @@ int executeTask(Task *thisTask) {
 		thisTask->remainingExe -= 1;
 		return thisTask->remainingExe;
 	} else if (thisTask->remainingExe == 0) {
-		printf("This task don\'t have no more execution to done");
+		printf("This task has no more executions to be done");
 		return 0;
 	}
-	printf("There is no Task to execute!!");
+	printf("There is no task to execute!");
 	return 0;
 }
