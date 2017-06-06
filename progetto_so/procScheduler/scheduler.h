@@ -40,9 +40,9 @@ int runScheduling() {
 				lastTask = newTaskElement(firstTask, idTraker);
 			} else {
 				lastTask = newTaskElement(lastTask, idTraker);
-				printListTasks(firstTask, lastTask);
+				printListTasks(firstTask,lastTask);
 				if (policy == 'p') {
-//					firstTask = sortListByPriority(firstTask, lastTask);
+					firstTask = sortListByPriority(firstTask, lastTask);
 				} else if (policy == 'e') {
 //					firstTask = sortListByExecution(firstTask, lastTask);
 				}
@@ -131,7 +131,16 @@ char switchPolicy(char pol) {
 }
 
 Task* sortListByPriority(Task *headTask, Task *lastTask) {
-
+	Task *tempTask = headTask;
+	do {
+		printf("\n\r %d \n\r",tempTask->ID);
+		if (tempTask->priority < tempTask->nextTask->priority) {
+			headTask = swapTask(headTask, tempTask, tempTask->nextTask);
+		}
+		printf("\n\r %d \n\r",tempTask->ID);
+		tempTask = tempTask->nextTask;
+	} while(tempTask-> ID !=0);
+	return headTask;
 }
 
 Task* sortListByExecution(Task* headTask, Task *lastTask) {
@@ -142,11 +151,10 @@ Task* swapTask(Task *headTask, Task *task1, Task *task2) {
 	if (headTask == task1) {
 		headTask = task2;
 	} else {
-		Task *tempTask = headTask;
-		while (tempTask->nextTask == task1) {
-			tempTask = tempTask->nextTask;
+		while (headTask->nextTask != task1) {
+			headTask = headTask->nextTask;
 		}
-		tempTask->nextTask = task2;
+		headTask->nextTask = task2;
 	}
 	task1->nextTask = task2->nextTask;
 	task2->nextTask = task1;
