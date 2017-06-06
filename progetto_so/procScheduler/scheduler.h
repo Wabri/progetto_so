@@ -41,7 +41,7 @@ int runScheduling() {
 				if (policy == 'p') {
 					firstTask = sortListByPriority(firstTask);
 				} else if (policy == 'e') {
-//					firstTask = sortListByExecution(firstTask);
+					firstTask = sortListByExecution(firstTask);
 				}
 			}
 			idTraker += 1;
@@ -71,13 +71,13 @@ int runScheduling() {
 			if (policy == 'p') {
 				firstTask = sortListByPriority(firstTask);
 			} else if (policy == 'e') {
-//				firstTask = sortListByExecution(firstTask);
+				firstTask = sortListByExecution(firstTask);
 			}
 			break;
 		case 7:
 			modifyExecNumb(firstTask);
 			if (policy == 'e') {
-//				firstTask = sortListByExecution(firstTask);
+				firstTask = sortListByExecution(firstTask);
 			}
 			break;
 		default:
@@ -155,15 +155,15 @@ Task* sortListByExecution(Task* headTask) {
 	Task *tempTask = headTask;
 	Task *previousTempTask = tempTask;
 	int flag = 0;
-	printf("0");
 	while (!flag) {
 		flag = 1;
 		tempTask = headTask;
 		previousTempTask = tempTask;
 		while (tempTask->ID != 0) {
-			if (tempTask->remainingExe > tempTask->nextTask->remainingExe) {
+			if ((tempTask->remainingExe > tempTask->nextTask->remainingExe)
+					&& (tempTask->nextTask->remainingExe != 0)) {
 				if (tempTask == headTask) {
-					headTask = swapTask(headTask, tempTask, tempTask->nextTask);
+					headTask = swapTask(headTask, headTask, headTask->nextTask);
 				} else {
 					previousTempTask = swapTask(previousTempTask, tempTask,
 							tempTask->nextTask);
