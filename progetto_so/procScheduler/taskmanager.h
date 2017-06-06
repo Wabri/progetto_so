@@ -26,8 +26,8 @@ void modifyPriority(Task*);
 void modifyExecNumb(Task*);
 Task* newTaskElement(Task*, int);
 void printTask(Task*);
-void printListTasks(Task*, Task*);
-Task* deleteTask(Task*, Task*, Task*);
+void printListTasks(Task*);
+Task* deleteTask(Task*, Task*);
 int executeTask(Task*);
 
 int setExeNumber() {
@@ -118,19 +118,19 @@ void printTask(Task *thisTask) {
 	printf("+----+-----------+-----------+-------------------+\n\r");
 }
 
-void printListTasks(Task *first, Task *last) {
+void printListTasks(Task *first) {
 	printf("\n\rThe list of tasks is: \n\r");
 	printf("+----+-----------+-----------+-------------------+\n\r");
 	printf("| ID + PRIORITA\' + NOME TASK + ESECUZ. RIMANENTI |\n\r");
 	printf("+----+-----------+-----------+-------------------+\n\r");
 	Task* tmp = first;
-	while (tmp != last) {
+	while (tmp->ID != 0) {
 		printTask(tmp);
 		tmp = (*tmp).nextTask;
 	}
 }
 
-Task* deleteTask(Task *first, Task *thisTask, Task *last) {
+Task* deleteTask(Task *first, Task *thisTask) {
 	if (thisTask != NULL) {
 		Task *tmpTask = first;
 		if (thisTask == first) {

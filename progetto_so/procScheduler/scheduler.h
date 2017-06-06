@@ -48,17 +48,17 @@ int runScheduling() {
 			break;
 		case 2:
 			if (executeTask(firstTask) == 0) {
-				firstTask = deleteTask(firstTask, firstTask, lastTask);
+				firstTask = deleteTask(firstTask, firstTask);
 			}
 			break;
 		case 3:
 			tmpTask = selectTask(firstTask);
 			if (executeTask(tmpTask) == 0) {
-				firstTask = deleteTask(firstTask, tmpTask, lastTask);
+				firstTask = deleteTask(firstTask, tmpTask);
 			}
 			break;
 		case 4:
-			firstTask = deleteTask(firstTask, selectTask(firstTask), lastTask);
+			firstTask = deleteTask(firstTask, selectTask(firstTask));
 			break;
 		case 5:
 			modifyPriority(firstTask);
@@ -91,7 +91,7 @@ int runScheduling() {
 			} else if (policy == 'e') {
 				printf("REMAINING EXECUTIONS ");
 			}
-			printListTasks(firstTask, lastTask);
+			printListTasks(firstTask);
 		}
 	}
 	return 0;
