@@ -57,7 +57,7 @@ int setPriority() {
 void setTaskName(Task *actualTask) {
 	char name[8];
 	printf("\n\rName this task (max 8 chars) : ");
-	scanf("%s", name);
+	scanf("%8s", name);
 	strcpy(actualTask->nameTask, name);
 	return;
 }
