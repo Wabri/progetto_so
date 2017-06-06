@@ -47,9 +47,16 @@ int runScheduling() {
 			idTraker += 1;
 			break;
 		case 2:
-			if (executeTask(firstTask) == 0) {
-				firstTask = deleteTask(firstTask, firstTask);
+			printf("\n\rHow many execution do you want to do: ");
+			scanf("%d", &flag);
+			while (flag != 0) {
+				if (executeTask(firstTask) == 0) {
+					firstTask = deleteTask(firstTask, firstTask);
+				}
+				flag -= 1;
 			}
+			flag = 1;
+			printf("\n\r");
 			break;
 		case 3:
 			tmpTask = selectTask(firstTask);
