@@ -12,11 +12,9 @@
 int runScheduling(void);
 int getChoice(void);
 char switchPolicy(char pol);
-Task* sortListByPriority(Task*, Task*);
-Task* sortListByExecution(Task*, Task*);
+Task* sortListByPriority(Task*);
+Task* sortListByExecution(Task*);
 Task* swapTask(Task*, Task*, Task*);
-void swapTasks(Task**, Task**, Task**b);
-Task* getPreviousTask(Task*, Task*);
 
 int runScheduling() {
 	int idTraker = 1;
@@ -40,11 +38,10 @@ int runScheduling() {
 				lastTask = newTaskElement(firstTask, idTraker);
 			} else {
 				lastTask = newTaskElement(lastTask, idTraker);
-				printListTasks(firstTask,lastTask);
 				if (policy == 'p') {
-					firstTask = sortListByPriority(firstTask, lastTask);
+					firstTask = sortListByPriority(firstTask);
 				} else if (policy == 'e') {
-//					firstTask = sortListByExecution(firstTask, lastTask);
+//					firstTask = sortListByExecution(firstTask);
 				}
 			}
 			idTraker += 1;
@@ -66,22 +63,21 @@ int runScheduling() {
 		case 5:
 			modifyPriority(firstTask);
 			if (policy == 'p') {
-//				firstTask = sortListByPriority(firstTask, lastTask);
+				firstTask = sortListByPriority(firstTask);
 			}
 			break;
 		case 6:
 			policy = switchPolicy(policy);
 			if (policy == 'p') {
-//				firstTask = sortListByPriority(firstTask, lastTask);
-
+				firstTask = sortListByPriority(firstTask);
 			} else if (policy == 'e') {
-//				firstTask = sortListByExecution(firstTask, lastTask);
+//				firstTask = sortListByExecution(firstTask);
 			}
 			break;
 		case 7:
 			modifyExecNumb(firstTask);
 			if (policy == 'e') {
-//				firstTask = sortListByExecution(firstTask, lastTask);
+//				firstTask = sortListByExecution(firstTask);
 			}
 			break;
 		default:
@@ -130,33 +126,65 @@ char switchPolicy(char pol) {
 	return 'p';
 }
 
-Task* sortListByPriority(Task *headTask, Task *lastTask) {
+Task* sortListByPriority(Task *headTask) {
 	Task *tempTask = headTask;
-	do {
-		printf("\n\r %d \n\r",tempTask->ID);
-		if (tempTask->priority < tempTask->nextTask->priority) {
-			headTask = swapTask(headTask, tempTask, tempTask->nextTask);
+	Task *previousTempTask = tempTask;
+	int flag = 0;
+	while (!flag) {
+		flag = 1;
+		tempTask = headTask;
+		previousTempTask = tempTask;
+		while (tempTask->ID != 0) {
+			if (tempTask->priority < tempTask->nextTask->priority) {
+				if (tempTask == headTask) {
+					headTask = swapTask(headTask, tempTask, tempTask->nextTask);
+				} else {
+					previousTempTask = swapTask(previousTempTask, tempTask,
+							tempTask->nextTask);
+				}
+				flag = 0;
+			}
+			previousTempTask = tempTask;
+			tempTask = tempTask->nextTask;
 		}
-		printf("\n\r %d \n\r",tempTask->ID);
-		tempTask = tempTask->nextTask;
-	} while(tempTask-> ID !=0);
-	return headTask;
-}
-
-Task* sortListByExecution(Task* headTask, Task *lastTask) {
-
-}
-
-Task* swapTask(Task *headTask, Task *task1, Task *task2) {
-	if (headTask == task1) {
-		headTask = task2;
-	} else {
-		while (headTask->nextTask != task1) {
-			headTask = headTask->nextTask;
-		}
-		headTask->nextTask = task2;
 	}
-	task1->nextTask = task2->nextTask;
-	task2->nextTask = task1;
 	return headTask;
+}
+
+Task* sortListByExecution(Task* headTask) {
+	Task *tempTask = headTask;
+	Task *previousTempTask = tempTask;
+	int flag = 0;
+	printf("0");
+	while (!flag) {
+		flag = 1;
+		tempTask = headTask;
+		previousTempTask = tempTask;
+		while (tempTask->ID != 0) {
+			if (tempTask->remainingExe > tempTask->nextTask->remainingExe) {
+				if (tempTask == headTask) {
+					headTask = swapTask(headTask, tempTask, tempTask->nextTask);
+				} else {
+					previousTempTask = swapTask(previousTempTask, tempTask,
+							tempTask->nextTask);
+				}
+				flag = 0;
+			}
+			previousTempTask = tempTask;
+			tempTask = tempTask->nextTask;
+		}
+	}
+	return headTask;
+}
+
+Task* swapTask(Task *previousTask, Task *taskSwap1, Task *taskSwap2) {
+	if (previousTask != taskSwap1) {
+		previousTask->nextTask = taskSwap2;
+		taskSwap1->nextTask = taskSwap2->nextTask;
+		taskSwap2->nextTask = taskSwap1;
+		return previousTask;
+	}
+	taskSwap1->nextTask = taskSwap2->nextTask;
+	taskSwap2->nextTask = taskSwap1;
+	return taskSwap2;
 }
