@@ -12,9 +12,9 @@
 int runScheduling(void);
 int getChoice(void);
 char switchPolicy(char pol);
-void sortListPriority(Task**, Task*);
-void swapTasks(Task**, Task**, Task**b);
-Task* getPreviousTask(Task*, Task*);
+Task* sortListByPriority(Task*);
+Task* sortListByExecution(Task*);
+Task* swapTask(Task*, Task*, Task*);
 
 int runScheduling() {
 	int idTraker = 1;
@@ -38,18 +38,23 @@ int runScheduling() {
 				lastTask = newTaskElement(firstTask, idTraker);
 			} else {
 				lastTask = newTaskElement(lastTask, idTraker);
+				if (policy == 'p') {
+					firstTask = sortListByPriority(firstTask);
+				} else if (policy == 'e') {
+					firstTask = sortListByExecution(firstTask);
+				}
 			}
 			idTraker += 1;
 			break;
 		case 2:
 			if (executeTask(firstTask) == 0) {
-				firstTask = deleteTask(firstTask,firstTask,lastTask);
+				firstTask = deleteTask(firstTask, firstTask, lastTask);
 			}
 			break;
 		case 3:
 			tmpTask = selectTask(firstTask);
-			if (executeTask(tmpTask)==0) {
-				firstTask = deleteTask(firstTask,tmpTask,lastTask);
+			if (executeTask(tmpTask) == 0) {
+				firstTask = deleteTask(firstTask, tmpTask, lastTask);
 			}
 			break;
 		case 4:
@@ -57,19 +62,36 @@ int runScheduling() {
 			break;
 		case 5:
 			modifyPriority(firstTask);
+			if (policy == 'p') {
+				firstTask = sortListByPriority(firstTask);
+			}
 			break;
 		case 6:
 			policy = switchPolicy(policy);
+			if (policy == 'p') {
+				firstTask = sortListByPriority(firstTask);
+			} else if (policy == 'e') {
+				firstTask = sortListByExecution(firstTask);
+			}
 			break;
 		case 7:
 			modifyExecNumb(firstTask);
+			if (policy == 'e') {
+				firstTask = sortListByExecution(firstTask);
+			}
 			break;
 		default:
 			flag = 0;
 			break;
 		}
 		if (!isEmptyTaskList(firstTask)) {
-			printListTasks(firstTask, lastTask, policy);
+			printf("\n\rScheduling Policy: ");
+			if (policy == 'p') {
+				printf("PRIORITY ");
+			} else if (policy == 'e') {
+				printf("REMAINING EXECUTIONS ");
+			}
+			printListTasks(firstTask, lastTask);
 		}
 	}
 	return 0;
@@ -104,67 +126,65 @@ char switchPolicy(char pol) {
 	return 'p';
 }
 
-void sortListPriority(Task **list, Task *firstTask) {
-	Task *currT, *prevT;
-	prevT = NULL;
-	for (currT = *list; currT != NULL; prevT = currT, currT = currT->nextTask) {
-		if ((currT->nextTask->priority) > (currT->priority)) {
-			swapTasks(&firstTask, &currT, &(currT->nextTask)); // LOOPS FOREVER
+Task* sortListByPriority(Task *headTask) {
+	Task *tempTask = headTask;
+	Task *previousTempTask = tempTask;
+	int flag = 0;
+	while (!flag) {
+		flag = 1;
+		tempTask = headTask;
+		previousTempTask = tempTask;
+		while (tempTask->ID != 0) {
+			if (tempTask->priority < tempTask->nextTask->priority) {
+				if (tempTask == headTask) {
+					headTask = swapTask(headTask, tempTask, tempTask->nextTask);
+				} else {
+					previousTempTask = swapTask(previousTempTask, tempTask,
+							tempTask->nextTask);
+				}
+				flag = 0;
+			}
+			previousTempTask = tempTask;
+			tempTask = tempTask->nextTask;
 		}
 	}
-	return;
+	return headTask;
 }
 
-void swapTasks(Task **head, Task **a, Task **b) {
-	// first check if a agrgument is null
-	if ((*head) == NULL ||               // Empty list
-			(*a) == NULL || (*b) == NULL) {     // one node is null
-		// Nothing to swap, just return
-		printf("\n Nothing to swap, just return \n");
-		return;
-	}
-	// find previos nodes
-	Task* prevA = getPreviousTask(*head, *a);
-	Task* prevB = getPreviousTask(*head, *b);
-
-	//Now swap previous node's next
-	if (prevA) {
-		prevA->nextTask = (*b); // a's previous become b's previous, and
-	}
-	if (prevB) {
-		prevB->nextTask = (*a); // b's previous become a's previous
-	}
-
-	//Now swap next fiels of candidate nodes
-	Task* temp = (*a)->nextTask;
-	(*a)->nextTask = (*b)->nextTask;
-	(*b)->nextTask = temp;
-	//change head: if any node was a head
-	if ((*head) == (*a)) {
-		*head = *b;
-	} else {
-		if ((*head) == (*b)) {
-			*head = *a;
+Task* sortListByExecution(Task* headTask) {
+	Task *tempTask = headTask;
+	Task *previousTempTask = tempTask;
+	int flag = 0;
+	while (!flag) {
+		flag = 1;
+		tempTask = headTask;
+		previousTempTask = tempTask;
+		while (tempTask->ID != 0) {
+			if ((tempTask->remainingExe > tempTask->nextTask->remainingExe)
+					&& (tempTask->nextTask->remainingExe != 0)) {
+				if (tempTask == headTask) {
+					headTask = swapTask(headTask, headTask, headTask->nextTask);
+				} else {
+					previousTempTask = swapTask(previousTempTask, tempTask,
+							tempTask->nextTask);
+				}
+				flag = 0;
+			}
+			previousTempTask = tempTask;
+			tempTask = tempTask->nextTask;
 		}
 	}
-	return;
+	return headTask;
 }
 
-Task* getPreviousTask(Task* head, Task* a) {
-	if (head == a) {
-		// a is the first task
-		return NULL;
+Task* swapTask(Task *previousTask, Task *taskSwap1, Task *taskSwap2) {
+	if (previousTask != taskSwap1) {
+		previousTask->nextTask = taskSwap2;
+		taskSwap1->nextTask = taskSwap2->nextTask;
+		taskSwap2->nextTask = taskSwap1;
+		return previousTask;
 	}
-	Task* temp = head; 		// temp is current task
-	Task* prevA = NULL;
-
-	while (temp && temp != a) { 	//search while not reach to end or the task
-		prevA = temp;          // find previous task
-		temp = temp->nextTask;
-	}
-	if (temp != a) {			// node[a] not present in list
-		fprintf(stderr, "\n error: node not found!\n");
-		exit(EXIT_FAILURE); 	// bad technique to exit()
-	}
-	return prevA;
+	taskSwap1->nextTask = taskSwap2->nextTask;
+	taskSwap2->nextTask = taskSwap1;
+	return taskSwap2;
 }
