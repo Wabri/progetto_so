@@ -9,6 +9,8 @@
 #include <stdlib.h>
 #include "taskmanager.h"
 
+#define POINTSHEAD ".......................................................................\n\r"
+
 int runScheduling(void);
 int getChoice(void);
 char switchPolicy(char pol);
@@ -23,11 +25,9 @@ int runScheduling() {
 	Task *firstTask = malloc(sizeof(Task));
 	Task *lastTask = NULL; // the last Task is always empty
 	Task *tmpTask;
-	printf(
-			".......................................................................\n\r");
+	printf(POINTSHEAD);
 	printf("               This is a process scheduler\n\r");
-	printf(
-			".......................................................................\n\r");
+	printf(POINTSHEAD);
 	while (flag == 1) {
 		switch (getChoice()) {
 		case 0:
@@ -94,9 +94,9 @@ int runScheduling() {
 		if (!isEmptyTaskList(firstTask)) {
 			printf("\n\rScheduling Policy: ");
 			if (policy == 'p') {
-				printf("PRIORITY ");
+				printf("PRIORITY \n\r");
 			} else if (policy == 'e') {
-				printf("REMAINING EXECUTIONS ");
+				printf("REMAINING EXECUTIONS \n\r");
 			}
 			printListTasks(firstTask);
 		}
@@ -120,14 +120,10 @@ int getChoice() {
 char switchPolicy(char pol) {
 	printf("\n\rYou switched the policy of scheduling from ");
 	if (pol == 'p') {
-		printf("PRIORITY ");
-		printf("to ");
-		printf("REMAINING EXECUTIONS\n\r");
+		printf("PRIORITY to REMAINING EXECUTIONS\n\r");
 		return 'e';
 	} else if (pol == 'e') {
-		printf("REMAINING EXECUTIONS ");
-		printf("to ");
-		printf("PRIORITY \n\r");
+		printf("REMAINING EXECUTIONS to PRIORITY \n\r");
 		return 'p';
 	}
 	return 'p';
