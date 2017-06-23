@@ -154,6 +154,23 @@ void clients_insert(char* num)
  
  
  
+int clients_search(char* num)
+{
+    struct node *temp, *prev;
+    temp=head;
+    while(temp!=NULL)
+    {
+        if(strcmp(temp->data,num)==0)
+            return 1;
+        
+        prev=temp;
+        temp= temp->next;
+    }
+    
+    return 0;
+}
+ 
+ 
 int clients_delete(char* num)
 {
     struct node *temp, *prev;

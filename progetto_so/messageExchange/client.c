@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <signal.h>
+#include <math.h>
 
 #include "config.h"
 #include "functions.h"
@@ -85,28 +86,112 @@ void connect(){
 }
 
 void getClientsID(){
-    // int fd_client;
-
     char str[7];
-    // char pipeName[15];
-    // char response[100];
-
     char *s_pid;
-    // char *p_pipeName;
 
     sprintf(s_pid, "%d", getpid());
-
     sprintf(str, "2 %s", s_pid); // puts string into buffer
 
     write(fd, str, sizeof(str));
 
-
-
-
     return;
 }
 
+void clear_stream(FILE *in)
+{
+    int ch;
+    
+    clearerr(in);
+    
+    do
+        ch = getc(in);
+    while (ch != '\n' && ch != EOF);
+    
+    clearerr(in);
+}
+
+int get_int_len (int value){
+  int l=1;
+  while(value>9){ l++; value/=10; }
+  return l;
+}
+
 void sendMessage(){
+    char msg[MAX_MSG_LEN];
+    int confirm;
+    int i = 1;
+    //read the string message from STDIN
+    clear_stream(stdin);
+    printf("\nEnter the message: ");
+    scanf("%[^\n]s", msg);
+
+    //output the message to the STDOUT
+    printf("Message entered : %s\n", msg);
+
+    //message confirm
+    printf("\nPress 1 to confirm, others to delete the message.. ");
+    if(scanf("%d", &confirm)==1 && confirm==1){
+        //confirmed
+        if(DEBUG)
+            printf("%s\n", "Start sending..");
+
+        // char buf[MAX_PID_LEN];
+
+        // while (fgets(buf, sizeof buf, stdin) != NULL) {
+        //     int year = strtol(buf, NULL, 0);
+
+        //     const char *p = strchr(buf, ' ');
+        //     if (p != NULL) {
+        //         char name[MAX_PID_LEN];
+        //         strcpy(name, p + 1); // safe because strlen(p) <= sizeof(name)
+        //         printf("- %s\n", name);
+        //     }
+        // }
+
+        // char pid[10] = "";
+        int k = 1;
+        int pid;
+        
+        while (1) {
+            printf("\nEnter the %dth pid destination (letters to exit): ", k);
+            
+            if(scanf("%d", &pid)==1){    
+                if(DEBUG)
+                    printf("pid entered : %d\n", pid);
+                
+                //send to pid
+                int size = 4 + get_int_len(pid) + strlen(msg);
+                char str[size];
+                
+                if(DEBUG)
+                    printf("[DEBUG] str size %d\n", size);
+
+                sprintf(str, "3 %d %s", pid, msg); // puts string into buffer
+                
+                if(DEBUG)
+                    printf("[DEBUG] string to send: %s\n", str);
+                
+                write(fd, str, sizeof(str));
+
+
+                k = k + 1;
+            }else{
+                clear_stream(stdin);
+                break;
+            }
+        }
+
+        if(DEBUG)
+            printf("%s\n", "End sending");
+    
+    }else{
+        clear_stream(stdin);
+        printf("%s\n", "Message aborted");
+    }
+        
+    
+    
+
     return;
 }
 
@@ -135,8 +220,8 @@ void clientExit(){
     exit(0);
 }
 
-void ex_program(int sig) {
-    if(sig == 2){
+void sigHandler_1(int signumber) {
+    if(signumber == SIGINT){
         disconnect();
         clientExit();
     }
@@ -144,8 +229,8 @@ void ex_program(int sig) {
     return;
 }
 
-//Handler - Exiting process, OR reading from pipe
-void sigHandler(int signumber){
+//SIGUSR1 when the server has sent something to this client
+void sigHandler_2(int signumber){
 
     if(signumber == SIGUSR1) {
         if(DEBUG)
@@ -166,7 +251,7 @@ void sigHandler(int signumber){
         fd_client = open(pipeName, O_RDWR); /* Open it for writing */
         // printf("pipeName: %s\n", pipeName);
         readLine(fd_client, response);
-        printf("Client list: %s\n", response);
+        printf("Received: %s\n", response);
 
         close(fd_client);
 
@@ -175,10 +260,23 @@ void sigHandler(int signumber){
     menu();
 }
 
+//SIGUSR2 alert when a message is sent to a client who is not connected to the server
+void sigHandler_3(int signumber){
+
+    if(signumber == SIGUSR2) {
+        if(DEBUG)
+            printf("[DEBUG] SIGUSR2 catched.\n");
+
+    }
+    
+    // menu();
+}
+
 int main()
 {
-    signal(SIGINT, ex_program);
-    signal(SIGUSR1 ,sigHandler); 
+    signal(SIGINT, sigHandler_1);
+    signal(SIGUSR1 ,sigHandler_2); 
+    signal(SIGUSR2 ,sigHandler_3); 
 
     fd = open(myfifo, O_WRONLY);
 
