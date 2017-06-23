@@ -24,8 +24,38 @@ void getClientsID();
 void sendMessage();
 void disconnect();
 void clientExit();
-void ex_program(int sig);
+void ex_program(int);
+void sigHandler_1(int);
+void sigHandler_2(int);
+void sigHandler_3(int);
+void sigHandler_4(int);
 // void signal(SIGINT, ex_program);
+
+int main()
+{
+    if(DEBUG)
+        printf("[DEBUG] pid: %d\n", getpid());
+
+    signal(SIGINT, sigHandler_1);
+    signal(SIGUSR1 ,sigHandler_2); 
+    signal(SIGUSR2 ,sigHandler_3);
+    signal(SIGUSR3, sigHandler_4) ;
+
+    fd = open(myfifo, O_WRONLY);
+
+    if(fd==-1){
+        printf("%s\n", "[ERR]: server is not running");
+        return 0;
+    }
+
+    printf("Hello. Welcome to the client.\n");
+    printf("Press RETURN key to continue...\n");
+    getchar();
+    menu();
+
+    
+    return 0;
+}
 
 void menu()
 {
@@ -211,7 +241,6 @@ void sigHandler_1(int signumber) {
         disconnect();
         clientExit();
     }
-    
     return;
 }
 
@@ -276,27 +305,11 @@ void sigHandler_3(int signumber){
     // menu();
 }
 
-int main()
-{
-    if(DEBUG)
-        printf("[DEBUG] pid: %d\n", getpid());
-
-    signal(SIGINT, sigHandler_1);
-    signal(SIGUSR1 ,sigHandler_2); 
-    signal(SIGUSR2 ,sigHandler_3); 
-
-    fd = open(myfifo, O_WRONLY);
-
-    if(fd==-1){
-        printf("%s\n", "[ERR]: server is not running");
-        return 0;
+void sigHandler_4(int signumber) {
+    if (signumber == SIGUSR3) {
+        if (DEBUG) {
+            printf ("[DEBUG] SIGUSR3 carched.\n\r");
+        }
+        disconnect();
     }
-
-    printf("Hello. Welcome to the client.\n");
-    printf("Press RETURN key to continue...\n");
-    getchar();
-    menu();
-
-    
-    return 0;
 }

@@ -17,6 +17,7 @@ int initDataFolder(void);
 void sigHandler_1(int);
 void sendTextToClient(char*,char*);
 
+struct node *n;
 
 int main()
 {
@@ -40,7 +41,6 @@ int main()
 	char* p_token;
 
 	//init clients list
-    struct node *n;
     head=NULL;
 
 	int res = mknod(CMD_PIPE_NAME, S_IFIFO|0666, 0); /* Create named pipe */
@@ -102,10 +102,8 @@ int main()
 
 				//TO RESOLVE THE CONCAT
 				// p_msg[0] = '\0';
-				// while(p_token = strtok(NULL, " "))
+				// while(p_token = strtok(NULL, " ")) // why the first argument of strtok function is NULL? the first argument is the string to break in token
 				// 	strcat(p_msg,p_token);
-
-
 
 				if(DEBUG){
 					printf("[DEBUG] pid_d->%s\n", p_pid_d);
@@ -165,10 +163,17 @@ int initDataFolder() {
 void sigHandler_1(int signumber) {
     if(signumber == SIGINT){
         remove(CMD_PIPE_NAME);
-        //kill clients?
+        // here we have to insert a while to send SIGUSR3 to all clients to disconnect to this server
+    	// char* p_clientsList;
+    	// int i_pid;
+    	// char* p_token;
+		// p_clientsList = clients_display(n); // i set the struct declaration global, so i can interact in this section    
+		// while (p_token = strtok(p_clientList, " ")) {
+    	// i_pid = atoi(p_token);
+    	// kill(i_pid, SIGUSR3);
+		// }
     	exit(0);
     }
-    
     return;
 }
 
