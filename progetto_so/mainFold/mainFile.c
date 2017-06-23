@@ -8,6 +8,6 @@
 #include "../procScheduler/scheduler.h"
 
 int main() {
-	runScheduling();
+	cmd_out();
 	return 0;
 }
