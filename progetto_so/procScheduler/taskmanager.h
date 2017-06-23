@@ -1,10 +1,3 @@
-/*
- * taskmanager.h
- *
- *  Created on: 31 mag 2017
- *      Authors: wabri, pagano
- */
-
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
