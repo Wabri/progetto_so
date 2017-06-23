@@ -134,20 +134,6 @@ void sendMessage(){
         if(DEBUG)
             printf("%s\n", "Start sending..");
 
-        // char buf[MAX_PID_LEN];
-
-        // while (fgets(buf, sizeof buf, stdin) != NULL) {
-        //     int year = strtol(buf, NULL, 0);
-
-        //     const char *p = strchr(buf, ' ');
-        //     if (p != NULL) {
-        //         char name[MAX_PID_LEN];
-        //         strcpy(name, p + 1); // safe because strlen(p) <= sizeof(name)
-        //         printf("- %s\n", name);
-        //     }
-        // }
-
-        // char pid[10] = "";
         int k = 1;
         int pid;
         
@@ -156,16 +142,16 @@ void sendMessage(){
             
             if(scanf("%d", &pid)==1){    
                 if(DEBUG)
-                    printf("pid entered : %d\n", pid);
+                    printf("[DEBUG] pid entered : %d\n", pid);
                 
                 //send to pid
-                int size = 4 + get_int_len(pid) + strlen(msg);
+                int size = 5 + get_int_len(getpid()) + get_int_len(pid) + strlen(msg);
                 char str[size];
                 
                 if(DEBUG)
                     printf("[DEBUG] str size %d\n", size);
 
-                sprintf(str, "3 %d %s", pid, msg); // puts string into buffer
+                sprintf(str, "3 %d %d %s", getpid(), pid, msg); // puts string into buffer
                 
                 if(DEBUG)
                     printf("[DEBUG] string to send: %s\n", str);
@@ -181,7 +167,7 @@ void sendMessage(){
         }
 
         if(DEBUG)
-            printf("%s\n", "End sending");
+            printf("%s\n", "[DEBUG] End sending");
     
     }else{
         clear_stream(stdin);
@@ -283,13 +269,18 @@ void sigHandler_3(int signumber){
         if(DEBUG)
             printf("[DEBUG] SIGUSR2 catched.\n");
 
+        printf("Pid not found.\n");
+        // menu();
     }
     
-    menu();
+    // menu();
 }
 
 int main()
 {
+    if(DEBUG)
+        printf("[DEBUG] pid: %d\n", getpid());
+
     signal(SIGINT, sigHandler_1);
     signal(SIGUSR1 ,sigHandler_2); 
     signal(SIGUSR2 ,sigHandler_3); 
@@ -297,7 +288,7 @@ int main()
     fd = open(myfifo, O_WRONLY);
 
     if(fd==-1){
-        printf("%s\n", "ERR: server is not running");
+        printf("%s\n", "[ERR]: server is not running");
         return 0;
     }
 
@@ -306,5 +297,6 @@ int main()
     getchar();
     menu();
 
+    
     return 0;
 }
