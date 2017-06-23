@@ -9,6 +9,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "config.h"
+
 typedef struct TaskElement {
 	int ID;
 	char nameTask[8];
@@ -38,19 +40,19 @@ int setExeNumber() {
 		if ((exeNum < 0) || (exeNum > 99)) {
 			printf("\n\rError! It must be a number between 1 and 99. \n\r");
 		}
-	} while ((exeNum < 0) || (exeNum > 99));
+	} while ((exeNum <= 0) || (exeNum > 99));
 	return exeNum;
 }
 
 int setPriority() {
 	int priority = 0;
 	do {
-		printf("\n\rInsert the priority (ascending order)");
+		printf("\n\rInsert the priority (ascending order): ");
 		scanf("%i", &priority);
-		if (((priority < 0) || (priority > 10))) {
+		if (((priority < 0) || (priority > 9))) {
 			printf("\n\rError! It must be a number between 1 and 9\n\r");
 		}
-	} while ((priority < 0) || (priority > 10));
+	} while ((priority < 0) || (priority > 9));
 	return priority;
 }
 
@@ -115,13 +117,13 @@ void printTask(Task *thisTask) {
 	printf("| %d  + %d         + %s        + %d                | \n\r",
 			thisTask->ID, thisTask->priority, thisTask->nameTask,
 			thisTask->remainingExe);
-	printf("+----+-----------+-----------+-------------------+\n\r");
+	printf(SEPARATOR);
 }
 
 void printListTasks(Task *first) {
-	printf("+----+-----------+-----------+-------------------+\n\r");
-	printf("| ID + PRIORITA\' + NOME TASK + ESECUZ. RIMANENTI |\n\r");
-	printf("+----+-----------+-----------+-------------------+\n\r");
+	printf(SEPARATOR);
+	printf("| ID + PRIORITY + TASK NAME + REMAINING EXEC |\n\r");
+	printf(SEPARATOR);
 	Task* tmp = first;
 	while (tmp->ID != 0) {
 		printTask(tmp);
@@ -152,7 +154,7 @@ Task* deleteTask(Task *first, Task *thisTask) {
 			}
 		}
 	}
-	printf("There is no task to delete!");
+	printf("There is no task to delete!\n\r");
 	return first;
 }
 
@@ -161,9 +163,9 @@ int executeTask(Task *thisTask) {
 		thisTask->remainingExe -= 1;
 		return thisTask->remainingExe;
 	} else if (thisTask->remainingExe == 0) {
-		printf("This task has no more executions to be done");
+		printf("This task has no more executions to be done\n\r");
 		return 0;
 	}
-	printf("There is no task to execute!");
+	printf("There is no task to execute!\n\r");
 	return 0;
 }
