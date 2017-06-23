@@ -1,7 +1,14 @@
+# Eclipse folder
 Release/
 Debug/
-commandexe/data/
-mainFold/a.out
 .settings/
 .cproject
 .project
+
+# Folder create when program is run
+commandexe/data
+messageExchange/data
+
+# Type of file to exclude
+*.o
+*.out
