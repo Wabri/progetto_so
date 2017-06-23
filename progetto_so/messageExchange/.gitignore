@@ -1,0 +1,8 @@
+# exclude everything
+data/*
+
+# exception to the rule
+!data/
+
+*.o
+*.out
