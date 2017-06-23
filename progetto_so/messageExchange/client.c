@@ -31,8 +31,6 @@ void menu()
 {
     int menuChoice;
 
-      
-
     printf("Menu 1\n");
     printf("~~~~~~~~~~\n");
     printf("1. Connect to server.\n");
@@ -56,6 +54,7 @@ void menu()
             disconnect();
             break;
         case 5:
+            disconnect();
             clientExit();
             break;
         default:
@@ -220,6 +219,7 @@ void clientExit(){
     exit(0);
 }
 
+//CTRL+C managing
 void sigHandler_1(int signumber) {
     if(signumber == SIGINT){
         disconnect();
@@ -232,12 +232,12 @@ void sigHandler_1(int signumber) {
 //SIGUSR1 when the server has sent something to this client
 void sigHandler_2(int signumber){
 
+
     if(signumber == SIGUSR1) {
         if(DEBUG)
             printf("[DEBUG] SIGUSR1 catched.\n");
 
         //READ RESPONSE FROM PROCESS PIPE
-
         char s_pid[10];
         int fd_client;
         char pipeName[20];
@@ -254,10 +254,26 @@ void sigHandler_2(int signumber){
         printf("Received: %s\n", response);
 
         close(fd_client);
+        // remove(pipeName);
+
+        char c[50];
+        sprintf(c, "rm -f  %s",pipeName);
+        FILE *fp = popen(c, "r");
+
+        // if (fp == NULL) {
+        //     fprintf(f, "[Error] - Error executing the command\n");
+        // }
+
+        // read the output a line at a time - output it.
+        // while (fgets(path, sizeof(path) - 1, fp) != NULL) {
+        //     fprintf(f, "%s", path);
+        // }
+
+        // closing files
+        pclose(fp);
 
     }
     
-    menu();
 }
 
 //SIGUSR2 alert when a message is sent to a client who is not connected to the server
@@ -269,7 +285,7 @@ void sigHandler_3(int signumber){
 
     }
     
-    // menu();
+    menu();
 }
 
 int main()

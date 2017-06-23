@@ -209,8 +209,8 @@ char*  clients_display(struct node *r)
 
     r=head;
     if(r==NULL)
-    	return NULL;
-
+    	return "No Clients Connected";
+    // printf("%s\n", r);
     while(r!=NULL)
     {
         // printf("%s ",r->data);

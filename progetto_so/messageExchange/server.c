@@ -13,9 +13,36 @@
 #include "functions.h"
 #include "listManage.h"
 
+// init folder data to store pipes
+int initDataFolder() {
+	FILE *fp;
+
+	fp = popen("mkdir -p data/", "r");
+	if (fp == NULL) {
+		printf("[Error] - Error initialing process folder\n");
+		exit(1);
+	}
+	return 1;
+}
+
+//CTRL+C managing
+void sigHandler_1(int signumber) {
+    if(signumber == SIGINT){
+        remove(CMD_PIPE_NAME);
+
+    	exit(0);
+    }
+    
+    return;
+}
 
 int main()
 {
+	initDataFolder();
+	sleep(1); //in order to be sure of folder creation
+
+	signal(SIGINT, sigHandler_1);
+
 	int fd;
 	int fd_client;
 	
@@ -66,8 +93,13 @@ int main()
 				break;
 			case '2':
 				p_clientsList = clients_display(n);
-				if(&p_clientsList[0] == NULL)
-					sprintf(p_clientsList, "%s\n", "No Clients Connected");
+				// printf("%s\n", p_clientsList);
+
+				// if(p_clientsList == NULL){
+				// 	// printf("%s\n", "no clients");
+				// 	sprintf(p_clientsList, "%s\n", "No Clients Connected");
+				// 	// strcpy(p_clientsList, "No Clients Connected\0");
+				// }
 		        
 		        if(DEBUG)
 					printf("[DEBUG] %s\n", p_clientsList);
@@ -104,13 +136,15 @@ int main()
 				// kill(i_pid, SIGUSR2);
 				break;
 			case '4':
+			case '5':
 				clients_delete(pid);
 				break;
-		}
 
+		}
 	} 
 
-	
+	if(DEBUG)
+		printf("%s\n", "End..");
 
 	close (fd); /* Close pipe */
 	unlink(CMD_PIPE_NAME); /* Remove used pipe */
