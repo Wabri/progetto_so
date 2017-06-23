@@ -3,3 +3,5 @@ Debug/
 commandexe/data/
 mainFold/a.out
 .settings/
+.cproject
+.project
