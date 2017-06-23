@@ -9,16 +9,13 @@
 #include <stdlib.h>
 #include "taskmanager.h"
 
-#define POINTSHEAD ".......................................................................\n\r"
-
-int runScheduling(void);
 int getChoice(void);
 char switchPolicy(char pol);
 Task* sortListByPriority(Task*);
 Task* sortListByExecution(Task*);
 Task* swapTask(Task*, Task*, Task*);
 
-int runScheduling() {
+int main() {
 	int idTraker = 1;
 	int flag = 1;
 	char policy = 'p';

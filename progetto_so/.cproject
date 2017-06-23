@@ -44,7 +44,6 @@
 					<sourceEntries>
 						<entry excluding="mainFold|commandexe|procScheduler|Scheduler" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="commandexe"/>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="mainFold"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="procScheduler"/>
 					</sourceEntries>
 				</configuration>
@@ -94,7 +93,6 @@
 					<sourceEntries>
 						<entry excluding="mainFold|commandexe|procScheduler|Scheduler" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="commandexe"/>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="mainFold"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="procScheduler"/>
 					</sourceEntries>
 				</configuration>

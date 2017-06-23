@@ -9,7 +9,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define SEPARATOR "+----+-----------+-----------+-------------------+\n\r"
+#include "config.h"
 
 typedef struct TaskElement {
 	int ID;
@@ -148,7 +148,6 @@ Task* deleteTask(Task *first, Task *thisTask) {
 							0;
 					strcpy(thisTask->nameTask, "\0");
 					thisTask->nextTask = NULL;
-					printf("bau");
 					return first;
 				}
 				tmpTask = tmpTask->nextTask;
