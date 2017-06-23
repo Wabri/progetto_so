@@ -13,6 +13,142 @@
 #include "functions.h"
 #include "listManage.h"
 
+int initDataFolder(void);
+void sigHandler_1(int);
+void sendTextToClient(char*,char*);
+
+
+int main()
+{
+	initDataFolder();
+	sleep(1); //in order to be sure of folder creation
+
+	signal(SIGINT, sigHandler_1);
+
+	int i_fd;
+	int i_pid_m;
+	int i_pid_d;
+
+	char cmd[100];
+	char pid[10];
+	char clientsList[150];
+	
+	char* p_pid_m;
+	char* p_pid_d;
+	char* p_msg;
+	char* p_clientsList;
+	char* p_token;
+
+	//init clients list
+    struct node *n;
+    head=NULL;
+
+	int res = mknod(CMD_PIPE_NAME, S_IFIFO|0666, 0); /* Create named pipe */
+	if(res!=0){
+		printf("%s\n", "[ERR] Problem creating pipe");
+		return 1;
+	}
+
+	i_fd = open(CMD_PIPE_NAME, O_RDONLY); /* Open it for reading */
+	if(i_fd==-1){
+		printf("%s\n", "[ERR] Problem reading pipe");
+		return 1;
+	}
+
+	if(DEBUG)
+		printf("%s\n", "[DEBUG] Ready to read pipe ..");
+
+	while (readLine(i_fd, cmd)){
+		/* Receiving messages */
+        if(DEBUG)
+			printf("[DEBUG] Received: %s\n", cmd);
+
+		char* cmd_detected = strtok(cmd, " ");
+		// printf("%s\n", cmd_detected);
+		char* p_pid_m = strtok(NULL, " ");
+		// printf("%s\n", p_pid_m);
+
+
+		strcpy(pid, p_pid_m); /* BANG!!! */
+		i_pid_m = atoi(pid);
+		
+		if(DEBUG)
+			printf("[DEBUG] cmd->%s | pid_m->%s\n", cmd_detected, p_pid_m);
+
+		switch (cmd_detected[0]){
+			case '1':
+				clients_insert(pid);
+				break;
+			case '2':
+				p_clientsList = clients_display(n);
+				
+		        if(DEBUG)
+					printf("[DEBUG] %s\n", p_clientsList);
+
+				strcpy(clientsList, p_clientsList); /* BANG!!! */
+				
+				sendTextToClient(pid, clientsList);
+
+				if(DEBUG)
+					printf("[DEBUG] SIGUSR1 TO PID %d\n", i_pid_m);
+
+				//notify client through SIGNAL SIGUSR1
+				kill(i_pid_m, SIGUSR1);
+				break;		
+			case '3':
+
+				p_pid_d = strtok(NULL, " ");
+				p_msg = strtok(NULL, " ");
+
+				//TO RESOLVE THE CONCAT
+				// p_msg[0] = '\0';
+				// while(p_token = strtok(NULL, " "))
+				// 	strcat(p_msg,p_token);
+
+
+
+				if(DEBUG){
+					printf("[DEBUG] pid_d->%s\n", p_pid_d);
+					printf("[DEBUG] msg received: %s\n", p_msg);
+				}
+
+
+				if(clients_search(p_pid_d)==1){
+					//if the client is connected, send the message
+					i_pid_d = atoi(p_pid_d);			
+
+					sendTextToClient(p_pid_d, p_msg);
+					//notify client through SIGNAL SIGUSR1
+					kill(i_pid_d, SIGUSR1);
+				}else{
+					//otherwise notify the client who request to send this message
+					if(DEBUG)
+						printf("[DEBUG] Client %s is not connected.\n", p_pid_d);
+
+					//send SIGUSR2 to client
+					kill(i_pid_m, SIGUSR2);
+
+				}
+
+				break;
+			case '4':
+			case '5':
+				clients_delete(pid);
+				break;
+		}
+
+		printf("\n\r");
+	} 
+
+	if(DEBUG)
+		printf("%s\n", "End..");
+
+	close (i_fd); /* Close pipe */
+    remove(CMD_PIPE_NAME);
+
+}
+
+
 // init folder data to store pipes
 int initDataFolder() {
 	FILE *fp;
@@ -29,123 +165,30 @@ int initDataFolder() {
 void sigHandler_1(int signumber) {
     if(signumber == SIGINT){
         remove(CMD_PIPE_NAME);
-
+        //kill clients?
     	exit(0);
     }
     
     return;
 }
 
-int main()
-{
-	initDataFolder();
-	sleep(1); //in order to be sure of folder creation
-
-	signal(SIGINT, sigHandler_1);
-
-	int fd;
-	int fd_client;
-	
-	char cmd[100];
-	// char msg[MAX_MSG_LEN];
-	char pid[10];
+void sendTextToClient(char* pid, char* textToSend){
 	char pipeName[20];
-	char clientsList[150];
-	
-	char* p_pid;
-	char* p_msg;
 	char* p_pipeName;
-	char* p_clientsList;
+	int fd_client;
 
-	//init clients list
-    char* num;
-    struct node *n;
-    head=NULL;
-
-	int res = mknod(CMD_PIPE_NAME, S_IFIFO|0666, 0); /* Create named pipe */
-	if(res!=0){
-		printf("%s\n", "[ERR] Problem creating pipe");
-		return 1;
-	}
-
-	fd = open(CMD_PIPE_NAME, O_RDONLY); /* Open it for reading */
-	if(fd==-1){
-		printf("%s\n", "[ERR] Problem reading pipe");
-		return 1;
-	}
-
+	p_pipeName = (char*)malloc(strlen(PIPES_PATH)+strlen(pid)+1);
+	p_pipeName = concat(PIPES_PATH, pid);
+	strcpy(pipeName, p_pipeName); /* BANG!!! */
+	mknod(pipeName, S_IFIFO|0666, 0); /* Create named pipe */
 	if(DEBUG)
-		printf("%s\n", "[DEBUG] Ready to read pipe ..");
-
-	while (readLine (fd, cmd)){
-		/* Receiving messages */
-        if(DEBUG)
-			printf ("[DEBUG] Received: %s\n", cmd);
-
-		strtok_r(cmd, " ", &p_pid);
-		strcpy(pid, p_pid); /* BANG!!! */
-		int i_pid = atoi(pid);
-		if(DEBUG)
-			printf("[DEBUG] cmd->%c\n", cmd[0]);
-		switch (cmd[0]){
-			case '1':
-				clients_insert(pid);
-				break;
-			case '2':
-				p_clientsList = clients_display(n);
-				// printf("%s\n", p_clientsList);
-
-				// if(p_clientsList == NULL){
-				// 	// printf("%s\n", "no clients");
-				// 	sprintf(p_clientsList, "%s\n", "No Clients Connected");
-				// 	// strcpy(p_clientsList, "No Clients Connected\0");
-				// }
-		        
-		        if(DEBUG)
-					printf("[DEBUG] %s\n", p_clientsList);
-
-				p_pipeName = (char*)malloc(strlen(PIPES_PATH)+strlen(pid)+1);
-
-				p_pipeName = concat(PIPES_PATH, p_pid);
-
-				strcpy(pipeName, p_pipeName); /* BANG!!! */
-
-				mknod(pipeName, S_IFIFO|0666, 0); /* Create named pipe */
-				
-				strcpy(clientsList, p_clientsList); /* BANG!!! */
-				
-				fd_client = open(pipeName, O_RDWR); /* Open it for writing */
-				// printf("fd: %d\n", fd_client);
-				write(fd_client, clientsList, sizeof(clientsList));
-
-				// close(fd_client); /* Close pipe */
-				
-				if(DEBUG)
-					printf("[DEBUG] SIGUSR1 TO PID %d\n", i_pid);
-
-				kill(i_pid, SIGUSR1);
-				break;		
-			case '3':
-				if(DEBUG){
-					printf("[DEBUG] SENDING MESSAGE '%s' TO PID %d\n","", i_pid);
-				}
-				printf("cmd: %s\n", cmd);
-				strtok_r(&p_pid[0], " ", &p_msg);
-				printf("msg: %s\n", p_msg);
-
-				// kill(i_pid, SIGUSR2);
-				break;
-			case '4':
-			case '5':
-				clients_delete(pid);
-				break;
-
-		}
-	} 
-
+		printf("[DEBUG] Writing '%s' (size: %lu) to '%s'\n", textToSend, sizeof(textToSend), pipeName);
+	fd_client = open(pipeName, O_RDWR); /* Open it for writing */
+	
+	int res = write(fd_client, textToSend, sizeof(textToSend));
 	if(DEBUG)
-		printf("%s\n", "End..");
+		printf("[DEBUG] wrote %d elements\n", res);
+	// close(fd_client); /* Close pipe */
 
-	close (fd); /* Close pipe */
-	unlink(CMD_PIPE_NAME); /* Remove used pipe */
+	// return;	
 }
