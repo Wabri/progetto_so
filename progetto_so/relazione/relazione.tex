@@ -5,6 +5,8 @@
 \usepackage[english]{babel}
 \usepackage[T1]{fontenc}
 \usepackage{url}
+\usepackage{tabu}
+\usepackage{import}
 \usepackage{color}
 \usepackage{fancyhdr}
 \usepackage{amssymb}
@@ -12,6 +14,7 @@
 \usepackage[margin=2.5cm]{geometry} 
 \usepackage{listings}
 \usepackage[utf8x]{inputenc}
+\usepackage{titling}
 %\date{}
 \usepackage{textcomp}
 
@@ -40,6 +43,14 @@
     tabsize=2,
     language=C
 }
+
+
+\pretitle{%
+  \begin{center}
+  \LARGE
+  \includegraphics[scale=0.3]{logo_unifi.png}\\
+}
+\posttitle{\end{center}}
 
 \begin{document}
  
