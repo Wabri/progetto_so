@@ -28,7 +28,7 @@ void ex_program(int);
 void sigHandler_1(int);
 void sigHandler_2(int);
 void sigHandler_3(int);
-void sigHandler_4(int);
+// void sigHandler_4(int);
 // void signal(SIGINT, ex_program);
 
 int main()
@@ -39,7 +39,7 @@ int main()
     signal(SIGINT, sigHandler_1);
     signal(SIGUSR1 ,sigHandler_2); 
     signal(SIGUSR2 ,sigHandler_3);
-    signal(SIGUSR3, sigHandler_4) ;
+    // signal(SIGUSR3, sigHandler_4) ;
 
     fd = open(myfifo, O_WRONLY);
 
@@ -238,6 +238,9 @@ void clientExit(){
 //CTRL+C managing
 void sigHandler_1(int signumber) {
     if(signumber == SIGINT){
+        if(DEBUG)
+            printf("[DEBUG] SIGINT catched.\n");
+        
         disconnect();
         clientExit();
     }
@@ -305,11 +308,11 @@ void sigHandler_3(int signumber){
     // menu();
 }
 
-void sigHandler_4(int signumber) {
-    if (signumber == SIGUSR3) {
-        if (DEBUG) {
-            printf ("[DEBUG] SIGUSR3 carched.\n\r");
-        }
-        disconnect();
-    }
-}
+// void sigHandler_4(int signumber) {
+//     if (signumber == SIGUSR3) {
+//         if (DEBUG) {
+//             printf ("[DEBUG] SIGUSR3 carched.\n\r");
+//         }
+//         disconnect();
+//     }
+// }

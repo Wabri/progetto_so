@@ -1,5 +1,5 @@
-#include<stdio.h>
-#include<stdlib.h>
+// #include<stdio.h>
+// #include<stdlib.h>
  
 struct node
 {
@@ -158,7 +158,7 @@ char*  clients_display(struct node *r)
 
     r=head;
     if(r==NULL)
-    	return "No Clients Connected";
+        return "No Clients Connected";
     // printf("%s\n", r);
     while(r!=NULL)
     {
@@ -175,6 +175,32 @@ char*  clients_display(struct node *r)
     printf("\n");
     // printf("%s ",clients);
     return clients;
+}
+
+//send SIGINT to all clients connected.
+//RETURN the count of the clients found.
+int  clients_killer(struct node *r)
+{
+    int pid;
+    int clientsKilled=0;
+
+    r=head;
+    if(r==NULL)
+    	return 0;
+
+    while(r!=NULL)
+    {
+        pid = atoi(r->data);
+        if(DEBUG)
+            printf("[DEBUG] pid to kill: %d\n",pid);
+
+        kill(pid,SIGINT);
+        clientsKilled += 1;
+        r=r->next;
+    }
+    printf("\n");
+    // printf("%s ",clients);
+    return clientsKilled;
 }
  
  

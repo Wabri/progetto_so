@@ -162,16 +162,12 @@ int initDataFolder() {
 //CTRL+C managing
 void sigHandler_1(int signumber) {
     if(signumber == SIGINT){
+        int killed;
         remove(CMD_PIPE_NAME);
-        // here we have to insert a while to send SIGUSR3 to all clients to disconnect to this server
-    	// char* p_clientsList;
-    	// int i_pid;
-    	// char* p_token;
-		// p_clientsList = clients_display(n); // i set the struct declaration global, so i can interact in this section    
-		// while (p_token = strtok(p_clientList, " ")) {
-    	// i_pid = atoi(p_token);
-    	// kill(i_pid, SIGUSR3);
-		// }
+        // here we have to insert a while to send SIGINT to all clients to disconnect to this server
+    	killed = clients_killer(n);
+    	if(DEBUG)
+    		printf("[DEBUG] killed %d clients\n", killed);
     	exit(0);
     }
     return;
