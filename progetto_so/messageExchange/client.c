@@ -240,7 +240,7 @@ void sigHandler_1(int signumber) {
     if(signumber == SIGINT){
         if(DEBUG)
             printf("[DEBUG] SIGINT catched.\n");
-        
+
         disconnect();
         clientExit();
     }
@@ -267,7 +267,10 @@ void sigHandler_2(int signumber){
         p_pipeName = concat(PIPES_PATH, s_pid);
         strcpy(pipeName, p_pipeName); /* BANG!!! */
         fd_client = open(pipeName, O_RDWR); /* Open it for writing */
-        // printf("pipeName: %s\n", pipeName);
+        
+        if(DEBUG)
+            printf("[DEBUG] Reading from: %s ...\n", pipeName);
+        
         readLine(fd_client, response);
         printf("Received: %s\n", response);
 

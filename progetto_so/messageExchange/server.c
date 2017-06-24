@@ -32,7 +32,7 @@ int main()
 
 	char cmd[100];
 	char pid[10];
-	char clientsList[150];
+	// char clientsList[150];
 	
 	char* p_pid_m;
 	char* p_pid_d;
@@ -85,9 +85,9 @@ int main()
 		        if(DEBUG)
 					printf("[DEBUG] %s\n", p_clientsList);
 
-				strcpy(clientsList, p_clientsList); /* BANG!!! */
+				// strcpy(clientsList, p_clientsList); /* BANG!!! */
 				
-				sendTextToClient(pid, clientsList);
+				sendTextToClient(pid, p_clientsList);
 
 				if(DEBUG)
 					printf("[DEBUG] SIGUSR1 TO PID %d\n", i_pid_m);
@@ -100,10 +100,11 @@ int main()
 				p_pid_d = strtok(NULL, " ");
 				p_msg = strtok(NULL, " ");
 
-				//TO RESOLVE THE CONCAT
-				// p_msg[0] = '\0';
-				// while(p_token = strtok(NULL, " ")) // why the first argument of strtok function is NULL? the first argument is the string to break in token
-				// 	strcat(p_msg,p_token);
+				while(p_token = strtok(NULL, " "))
+					sprintf(p_msg, "%s %s", p_msg, p_token);
+
+				// sprintf(p_msg, "%s%c", p_msg, '\n');
+
 
 				if(DEBUG){
 					printf("[DEBUG] pid_d->%s\n", p_pid_d);
@@ -173,20 +174,23 @@ void sigHandler_1(int signumber) {
     return;
 }
 
-void sendTextToClient(char* pid, char* textToSend){
+void sendTextToClient(char* pid, char* p_textToSend){
 	char pipeName[20];
 	char* p_pipeName;
 	int fd_client;
+	char c_textToSend[strlen(p_textToSend)+1];
+
+	strcpy( c_textToSend, p_textToSend );
 
 	p_pipeName = (char*)malloc(strlen(PIPES_PATH)+strlen(pid)+1);
 	p_pipeName = concat(PIPES_PATH, pid);
 	strcpy(pipeName, p_pipeName); /* BANG!!! */
 	mknod(pipeName, S_IFIFO|0666, 0); /* Create named pipe */
 	if(DEBUG)
-		printf("[DEBUG] Writing '%s' (size: %lu) to '%s'\n", textToSend, sizeof(textToSend), pipeName);
+		printf("[DEBUG] Writing '%s' (size: %lu) to '%s'\n", c_textToSend, sizeof(c_textToSend), pipeName);
 	fd_client = open(pipeName, O_RDWR); /* Open it for writing */
 	
-	int res = write(fd_client, textToSend, sizeof(textToSend));
+	int res = write(fd_client, c_textToSend, sizeof(c_textToSend));
 	if(DEBUG)
 		printf("[DEBUG] wrote %d elements\n", res);
 	// close(fd_client); /* Close pipe */
