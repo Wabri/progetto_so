@@ -15,11 +15,11 @@ int main() {
 	char policy = 'p';
 	Task *firstTask = malloc(sizeof(Task));
 	Task *lastTask = NULL; // the last Task is always empty
-	Task *tmpTask;
 	printf(POINTSHEAD);
 	printf("               This is a process scheduler\n\r");
 	printf(POINTSHEAD);
 	while (flag == 1) {
+		Task *tmpTask;
 		switch (getChoice()) {
 		case 0:
 			printf("Bye!\n\r");
