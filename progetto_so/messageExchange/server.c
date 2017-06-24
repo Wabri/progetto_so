@@ -8,20 +8,20 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <signal.h>
- 
 #include "config.h"
-#include "functions.h"
-#include "listManage.h"
+
+struct node *n;
 
 int initDataFolder(void);
 void sigHandler_1(int);
 void sendTextToClient(char*,char*);
+ 
+#include "functions.inc.h"
+#include "listmanage.h"
+#include "functions.server.h"
 
-
-int main()
-{
+int main(){
 	initDataFolder();
-	sleep(1); //in order to be sure of folder creation
 
 	signal(SIGINT, sigHandler_1);
 
@@ -31,7 +31,6 @@ int main()
 
 	char cmd[100];
 	char pid[10];
-	char clientsList[150];
 	
 	char* p_pid_m;
 	char* p_pid_d;
@@ -40,7 +39,6 @@ int main()
 	char* p_token;
 
 	//init clients list
-    struct node *n;
     head=NULL;
 
 	int res = mknod(CMD_PIPE_NAME, S_IFIFO|0666, 0); /* Create named pipe */
@@ -56,7 +54,7 @@ int main()
 	}
 
 	if(DEBUG)
-		printf("%s\n", "[DEBUG] Ready to read pipe ..");
+		printf("[DEBUG] Reading from pipe %s ..\n\n", CMD_PIPE_NAME);
 
 	while (readLine(i_fd, cmd)){
 		/* Receiving messages */
@@ -82,12 +80,7 @@ int main()
 			case '2':
 				p_clientsList = clients_display(n);
 				
-		        if(DEBUG)
-					printf("[DEBUG] %s\n", p_clientsList);
-
-				strcpy(clientsList, p_clientsList); /* BANG!!! */
-				
-				sendTextToClient(pid, clientsList);
+				sendTextToClient(pid, p_clientsList);
 
 				if(DEBUG)
 					printf("[DEBUG] SIGUSR1 TO PID %d\n", i_pid_m);
@@ -100,11 +93,8 @@ int main()
 				p_pid_d = strtok(NULL, " ");
 				p_msg = strtok(NULL, " ");
 
-				//TO RESOLVE THE CONCAT
-				// p_msg[0] = '\0';
-				// while(p_token = strtok(NULL, " "))
-				// 	strcat(p_msg,p_token);
-
+				while(p_token = strtok(NULL, " "))
+					sprintf(p_msg, "%s %s", p_msg, p_token);
 
 
 				if(DEBUG){
@@ -123,7 +113,7 @@ int main()
 				}else{
 					//otherwise notify the client who request to send this message
 					if(DEBUG)
-						printf("[DEBUG] Client %s is not connected.\n", p_pid_d);
+						printf("[DEBUG] Client %s is not connected\n", p_pid_d);
 
 					//send SIGUSR2 to client
 					kill(i_pid_m, SIGUSR2);
@@ -145,50 +135,4 @@ int main()
 
 	close (i_fd); /* Close pipe */
     remove(CMD_PIPE_NAME);
-
-}
-
-
-// init folder data to store pipes
-int initDataFolder() {
-	FILE *fp;
-
-	fp = popen("mkdir -p data/", "r");
-	if (fp == NULL) {
-		printf("[Error] - Error initialing process folder\n");
-		exit(1);
-	}
-	return 1;
-}
-
-//CTRL+C managing
-void sigHandler_1(int signumber) {
-    if(signumber == SIGINT){
-        remove(CMD_PIPE_NAME);
-        //kill clients?
-    	exit(0);
-    }
-    
-    return;
-}
-
-void sendTextToClient(char* pid, char* textToSend){
-	char pipeName[20];
-	char* p_pipeName;
-	int fd_client;
-
-	p_pipeName = (char*)malloc(strlen(PIPES_PATH)+strlen(pid)+1);
-	p_pipeName = concat(PIPES_PATH, pid);
-	strcpy(pipeName, p_pipeName); /* BANG!!! */
-	mknod(pipeName, S_IFIFO|0666, 0); /* Create named pipe */
-	if(DEBUG)
-		printf("[DEBUG] Writing '%s' (size: %lu) to '%s'\n", textToSend, sizeof(textToSend), pipeName);
-	fd_client = open(pipeName, O_RDWR); /* Open it for writing */
-	
-	int res = write(fd_client, textToSend, sizeof(textToSend));
-	if(DEBUG)
-		printf("[DEBUG] wrote %d elements\n", res);
-	// close(fd_client); /* Close pipe */
-
-	// return;	
 }
