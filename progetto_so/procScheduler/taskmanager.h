@@ -28,7 +28,6 @@ int executeTask(Task*);
 /*
 *
 * PURPOSE : Setter remainingExe member of struct TaskElement, this function is use by newTaskElement
-*
 * RETURN : int -> number of remaining execution
 *
 */
@@ -47,7 +46,6 @@ int setExeNumber() {
 /*
 *
 * PURPOSE : Setter priority member of struct TaskElement, this function is use by newTaskElement
-*
 * RETURN : int -> number of priority 
 *
 */
