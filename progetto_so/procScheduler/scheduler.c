@@ -99,6 +99,12 @@ int main() {
 	return 0;
 }
 
+/*
+*
+* PURPOSE : Print menù and get the choice
+* RETURN : int -> choice of the menù
+*
+*/
 int getChoice() {
 	printf("\n\rPlease select an option:\n\r");
 	printf(" 0) Exit\n\r 1) Create a new task\n\r 2) Execute the task on the top of the list\n\r");
@@ -112,6 +118,13 @@ int getChoice() {
 	return res;
 }
 
+/*
+*
+* PURPOSE : Switch the policy of the scheduler
+* PARAMS : char pol -> actual policy of the scheduler
+* RETURN : char -> new policy of the scheduler
+*
+*/
 char switchPolicy(char pol) {
 	printf("\n\rYou switched the policy of scheduling from ");
 	if (pol == 'p') {
@@ -124,6 +137,13 @@ char switchPolicy(char pol) {
 	return 'p';
 }
 
+/*
+*
+* PURPOSE : Sort list by priority (highest priority, task most important)
+* PARAMS : Task* headTask -> pointer of the first task of the list
+* RETURN : Task* -> new pointer of first (head) task
+*
+*/
 Task* sortListByPriority(Task *headTask) {
 	Task *tempTask = headTask;
 	Task *previousTempTask = tempTask;
@@ -149,6 +169,13 @@ Task* sortListByPriority(Task *headTask) {
 	return headTask;
 }
 
+/*
+*
+* PURPOSE : Sort list by priority (lowest remaining execution, task most important)
+* PARAMS : Task* headTask -> pointer of the first task of the list
+* RETURN : Task* -> new pointer of first (head) task
+*
+*/
 Task* sortListByExecution(Task* headTask) {
 	Task *tempTask = headTask;
 	Task *previousTempTask = tempTask;
@@ -175,6 +202,15 @@ Task* sortListByExecution(Task* headTask) {
 	return headTask;
 }
 
+/*
+*
+* PURPOSE : Swap two task
+* PARAMS : Task* previousTask -> pointer of the first task of the list
+* PARAMS : Task* taskSwap1 -> pointer of first task to swap
+* PARAMS : Task* taskSwap2 -> pointer of second task to swap
+* RETURN : Task* -> pointer of the previous task
+*
+*/
 Task* swapTask(Task *previousTask, Task *taskSwap1, Task *taskSwap2) {
 	if (previousTask != taskSwap1) {
 		previousTask->nextTask = taskSwap2;
