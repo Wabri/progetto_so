@@ -7,6 +7,7 @@
 \usepackage{url}
 \usepackage{tabu}
 \usepackage{import}
+\usepackage{subcaption}
 \usepackage{color}
 \usepackage{fancyhdr}
 \usepackage{amssymb}
@@ -57,7 +58,7 @@
 
 \title{\vspace{2cm}Relazione sul Progetto dell'Esame di\\ \textbf{Sistemi Operativi}\\ Anno Accademico 2016/17}
 
-\author{Bacciarini Yuri - \texttt{xxxxxxxx} - \href{mailto:yuri.bacciarini@stud.unifi.it}{\textit{yuri.bacciarini@stud.unifi.it}}
+\author{Bacciarini Yuri - \texttt{xxxxxxx} - \href{mailto:yuri.bacciarini@stud.unifi.it}{\textit{yuri.bacciarini@stud.unifi.it}}
    \and Bindi Giovanni - \texttt{5530804} - \href{mailto:giovanni.bindi@stud.unifi.it}{\textit{giovanni.bindi@stud.unifi.it}}
    \and Puliti Gabriele- \texttt{5300140} - \href{mailto:gabriele.puliti@stud.unifi.it}{\textit{gabriele.puliti@stud.unifi.it}}} 
 
@@ -127,11 +128,13 @@ Le operazioni legate allo scheduling sono state poi affidate a \textit{scheduler
 \end{itemize}
 
 \subsection{Evidenza del corretto funzionamento}
-Qu\'i andranno gli screenshot
+
+
+
 \subsection{Codice}
-\lstinputlisting[label=config, caption=Config, style=customc]{sched/config.h}
-\lstinputlisting[label=task, caption=Task Manager, style=customc]{sched/taskmanager.h}
-\lstinputlisting[label = sched, caption=Scheduler, style=customc]{sched/scheduler.c}
+\lstinputlisting[label=config, caption=config.c, style=customc]{progetto_so/procScheduler/config.h}
+\lstinputlisting[label=task, caption=Task Manager, style=customc]{progetto_so/procScheduler/taskmanager.h}
+\lstinputlisting[label = sched, caption=scheduler.c, style=customc]{progetto_so/procScheduler/scheduler.c}
 
 \newpage
 \section{Secondo Esercizio}
@@ -146,7 +149,8 @@ Viene poi eseguito il comando ed il log dell'output: l'esecuzione viene affidata
 \subsection{Evidenza del corretto funzionamento}
 Qu\'i andranno gli screenshot
 \subsection{Codice}
-\lstinputlisting[label=cmd, caption=Executor, style=customc]{exe/cmd.h}
+\lstinputlisting[label=cmd, caption=cmd.c, style=customc]{progetto_so/commandexe/cmd.c}
+\lstinputlisting[label=funct, caption=functions.h, style=customc]{progetto_so/commandexe/functions.h}
 
 \newpage
 \section{Terzo Esercizio}
@@ -155,9 +159,109 @@ Qu\'i andranno gli screenshot
 \subsection{Evidenza del corretto funzionamento}
 Qu\'i andranno gli screenshot
 \subsection{Codice}
+\lstinputlisting[label=config3, caption=config.h, style=customc]{progetto_so/messageExchange/config.h}
+\lstinputlisting[label=funcli, caption=functions.client.h, style=customc]{progetto_so/messageExchange/functions.client.h}
+\lstinputlisting[label=funser, caption=functions.server.h, style=customc]{progetto_so/messageExchange/functions.server.h}
+\lstinputlisting[label=list, caption=listmanage.h, style=customc]{progetto_so/messageExchange/listmanage.h}
+\lstinputlisting[label=funinc, caption=functions.inc.h, style=customc]{progetto_so/messageExchange/functions.inc.h}
+\lstinputlisting[label=client, caption=client.c, style=customc]{progetto_so/messageExchange/client.c}
+\lstinputlisting[label=server, caption=server.c, style=customc]{progetto_so/messageExchange/server.c}
 
+\section{Evidenza del corretto funzionamento}
 
+\subsection{Esercizio 1}
+\begin{figure}
+\begin{subfigure}[b]{0.5\textwidth}
+\includegraphics[width=\textwidth]{progetto_so/procScheduler/screenshot/1_new_task_without_error}
+\caption{inserimento}
+\end{subfigure}
+\begin{subfigure}[b]{0.5\textwidth}
+\includegraphics[width=\textwidth]{progetto_so/procScheduler/screenshot/2_new_task_with_error}
+\caption{inseriemento con errore}
+\end{subfigure}
+\begin{subfigure}[b]{0.5\textwidth}
+\includegraphics[width=\textwidth]{progetto_so/procScheduler/screenshot/3_new_task_sorting_policy_work}
+\caption{inserimento e ordinamento}
+\end{subfigure}
+\caption{Creazione di un nuovo task}
+\end{figure}
 
+\begin{figure}
+\begin{subfigure}[b]{0.5\textwidth}
+\includegraphics[width=\textwidth]{progetto_so/procScheduler/screenshot/4_change_policy_of_scheduler}
+\caption{switch della politica di scheduling}
+\end{subfigure}
+\begin{subfigure}[b]{0.5\textwidth}
+\includegraphics[width=\textwidth]{progetto_so/procScheduler/screenshot/5_new_task_added_to_test_policy_work}
+\caption{inserimento e ordinamento}
+\end{subfigure}
+\begin{subfigure}[b]{0.5\textwidth}
+\includegraphics[width=\textwidth]{progetto_so/procScheduler/screenshot/6_switch_policy_and_modify_priority_of_a_task}
+\caption{switch della policy e modifica della priori\'a}
+\end{subfigure}
+\caption{Mantenimento dell'ordinamento della lista dei task e modifica ai parametri}
+\end{figure}
+
+\begin{figure}
+\begin{subfigure}[b]{0.5\textwidth}
+\includegraphics[width=\textwidth]{progetto_so/procScheduler/screenshot/7_single_execution_of_a_task}
+\caption{singola esecuzione di un task}
+\end{subfigure}
+\begin{subfigure}[b]{0.5\textwidth}
+\includegraphics[width=\textwidth]{progetto_so/procScheduler/screenshot/8_150_executions_of_head_tasks}
+\caption{150 esecuzioni dei task in testa}
+\end{subfigure}
+\begin{subfigure}[b]{0.5\textwidth}
+\includegraphics[width=\textwidth]{progetto_so/procScheduler/screenshot/10_execution_of_all_tasks}
+\caption{esecuzione di tutti i task}
+\end{subfigure}
+\caption{Esecuzioni varie dei task}
+\end{figure}
+
+\begin{figure}
+\begin{subfigure}[b]{0.5\textwidth}
+\includegraphics[width=\textwidth]{progetto_so/procScheduler/screenshot/9_deletion_of_a_task}
+\caption{eliminazione di tutti i task}
+\end{subfigure}
+\begin{subfigure}[b]{0.5\textwidth}
+\includegraphics[width=\textwidth]{progetto_so/procScheduler/screenshot/11_exit}
+\caption{uscita dal programma}
+\end{subfigure}
+\caption{Eliminazione dei task ed uscita dal programma}
+\end{figure}
+
+\subsubsection{Stress Test}
+
+\begin{figure}
+\begin{subfigure}[b]{0.5\textwidth}
+\includegraphics[width=\textwidth]{progetto_so/procScheduler/screenshot/12_stress_test_execute_when_no_tasks_are_in_the_task_list}
+\caption{esecuzione a lista vuota}
+\end{subfigure}
+\begin{subfigure}[b]{0.5\textwidth}
+\includegraphics[width=\textwidth]{progetto_so/procScheduler/screenshot/13_stress_test_execute_with_id_when_no_tasks_are_in_the_task_list}
+\caption{esecuzione per ID a lista vuota}
+\end{subfigure}
+\begin{subfigure}[b]{0.5\textwidth}
+\includegraphics[width=\textwidth]{progetto_so/procScheduler/screenshot/14_stress_test_delete_with_id_when_no_tasks_are_in_the_task_list}
+\caption{eliminazione per ID a lista vuota}
+\end{subfigure}
+\caption{Esecuzioni a lista vuota}
+\end{figure}
+
+\begin{figure}
+\begin{subfigure}[b]{0.5\textwidth}
+\includegraphics[width=\textwidth]{progetto_so/procScheduler/screenshot/15_stress_test_request_priority_edit_when_no_tasks_are_in_the_list}
+\caption{modifica della priorit\'a a lista vuota}
+\end{subfigure}
+\begin{subfigure}[b]{0.5\textwidth}
+\includegraphics[width=\textwidth]{progetto_so/procScheduler/screenshot/16_stress_test_request_remaining_execution_edit_when_no_tasks_are_in_the_list}
+\caption{modifica del n.esec. a lista vuota}
+\end{subfigure}
+\caption{Modifiche a lista vuota}
+\end{figure}
+
+\subsection{Esercizio 2}
+\subsection{Esercizio 3}
 
 
 \end{document}

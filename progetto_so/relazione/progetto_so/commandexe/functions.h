@@ -1,11 +1,10 @@
-#include <stdio.h>    
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-
-#define MAX_CMD_LEN 100
-
-// init folder ../commandexe/data/[pid] to store the logs
+/*
+*
+* PURPOSE : Create the data folder to store outputs
+*
+* RETURN : void
+*
+*/
 int initDataFolder() {
 	char cmd[30];
 	FILE *fp;
@@ -18,13 +17,21 @@ int initDataFolder() {
 	return 0;
 }
 
-// function that execute the c command and log the output in ../commandexe/data/[pid]/out.[index]
+/*
+*
+* PURPOSE : Function that execute the c command and log the output in ../commandexe/data/[pid]/out.[index]
+*
+* PARAMS : char* -> command string
+* PARAMS : int -> index of out.[index] log
+* RETURN : int -> 0
+*
+*/
 int execCommandAndLog(char* c, int index) {
 	FILE *fp;
 	char path[1035];
 	char filename[7];
 
-	sprintf(filename, "../commandexe/data/%i/%s.%i", getpid(), "out", index);
+	sprintf(filename, "data/%i/%s.%i", getpid(), "out", index);
 	FILE *f = fopen(filename, "w");
 	if (f == NULL) {
 		printf("[Error] - Error opening file!\n");
@@ -51,23 +58,3 @@ int execCommandAndLog(char* c, int index) {
 	return 0;
 }
 
-int cmd_out() {
-	int k = 1;
-	initDataFolder();
-	while (1) {
-		char cmd[MAX_CMD_LEN] = "";
-		printf("\nEnter the %d-cmd: ", k);
-		//read chars until \n
-		scanf("%[^\n]", cmd);
-		getchar();
-		printf("Cmd entered : %s\n", cmd);
-		if (strlen(cmd) == 0) {
-			printf("Bye!\n");
-			exit(1);
-		}
-		execCommandAndLog(cmd, k);
-		k = k + 1;
-	}
-
-	return (0);
-}

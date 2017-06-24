@@ -1,9 +1,3 @@
-/*
- * scheduler.h
- *
- *  Created on: 25 mag 2017
- *      Authors: wabri, pagano
- */
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -21,11 +15,11 @@ int main() {
 	char policy = 'p';
 	Task *firstTask = malloc(sizeof(Task));
 	Task *lastTask = NULL; // the last Task is always empty
-	Task *tmpTask;
 	printf(POINTSHEAD);
 	printf("               This is a process scheduler\n\r");
 	printf(POINTSHEAD);
 	while (flag == 1) {
+		Task *tmpTask;
 		switch (getChoice()) {
 		case 0:
 			printf("Bye!\n\r");
@@ -56,9 +50,11 @@ int main() {
 			printf("\n\r");
 			break;
 		case 3:
-			tmpTask = selectTask(firstTask);
-			if (executeTask(tmpTask) == 0) {
-				firstTask = deleteTask(firstTask, tmpTask);
+			if (!isEmptyTaskList(firstTask)) {
+				tmpTask = selectTask(firstTask);
+				if (executeTask(tmpTask) == 0) {
+					firstTask = deleteTask(firstTask, tmpTask);
+				}
 			}
 			break;
 		case 4:
@@ -96,11 +92,19 @@ int main() {
 				printf("REMAINING EXECUTIONS \n\r");
 			}
 			printListTasks(firstTask);
+		} else {
+			printf("\n\rList is empty! Please insert a task first...\n\r");
 		}
 	}
 	return 0;
 }
 
+/*
+*
+* PURPOSE : Print menu and get the choice
+* RETURN : int -> choice of the menu
+*
+*/
 int getChoice() {
 	printf("\n\rPlease select an option:\n\r");
 	printf(" 0) Exit\n\r 1) Create a new task\n\r 2) Execute the task on the top of the list\n\r");
@@ -114,6 +118,13 @@ int getChoice() {
 	return res;
 }
 
+/*
+*
+* PURPOSE : Switch the policy of the scheduler
+* PARAMS : char pol -> actual policy of the scheduler
+* RETURN : char -> new policy of the scheduler
+*
+*/
 char switchPolicy(char pol) {
 	printf("\n\rYou switched the policy of scheduling from ");
 	if (pol == 'p') {
@@ -126,6 +137,13 @@ char switchPolicy(char pol) {
 	return 'p';
 }
 
+/*
+*
+* PURPOSE : Sort list by priority (highest priority, task most important)
+* PARAMS : Task* headTask -> pointer of the first task of the list
+* RETURN : Task* -> new pointer of first (head) task
+*
+*/
 Task* sortListByPriority(Task *headTask) {
 	Task *tempTask = headTask;
 	Task *previousTempTask = tempTask;
@@ -151,6 +169,13 @@ Task* sortListByPriority(Task *headTask) {
 	return headTask;
 }
 
+/*
+*
+* PURPOSE : Sort list by priority (lowest remaining execution, task most important)
+* PARAMS : Task* headTask -> pointer of the first task of the list
+* RETURN : Task* -> new pointer of first (head) task
+*
+*/
 Task* sortListByExecution(Task* headTask) {
 	Task *tempTask = headTask;
 	Task *previousTempTask = tempTask;
@@ -177,6 +202,15 @@ Task* sortListByExecution(Task* headTask) {
 	return headTask;
 }
 
+/*
+*
+* PURPOSE : Swap two task
+* PARAMS : Task* previousTask -> pointer of the first task of the list
+* PARAMS : Task* taskSwap1 -> pointer of first task to swap
+* PARAMS : Task* taskSwap2 -> pointer of second task to swap
+* RETURN : Task* -> pointer of the previous task
+*
+*/
 Task* swapTask(Task *previousTask, Task *taskSwap1, Task *taskSwap2) {
 	if (previousTask != taskSwap1) {
 		previousTask->nextTask = taskSwap2;
