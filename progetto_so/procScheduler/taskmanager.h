@@ -6,7 +6,7 @@
 
 typedef struct TaskElement {
 	int ID;
-	char nameTask[8];
+	char nameTask[9]; // the ninth element of the name must be 
 	int priority;
 	int remainingExe;
 	struct TaskElement *nextTask;
@@ -50,10 +50,22 @@ int setPriority() {
 }
 
 void setTaskName(Task *actualTask) {
-	char name[8];
-	printf("\n\rName this task (max 8 chars) : ");
-	scanf("%8s", name);
-	strcpy(actualTask->nameTask, name);
+	char name[256];
+	do {
+		printf("\n\rName this task (max 8 chars) : ");
+		scanf("%s", name);
+		if (strlen(name)>0 && strlen(name)<=8) {
+			strcpy(actualTask->nameTask, name);
+			for (int i = strlen(name); i<=9 ;i++) {
+				actualTask->nameTask[i] = '\0'; // this for cycle set all character of the name task with the null character
+			}
+			return;
+		} else {
+			printf("\n\rThe name of the task must be less than 8");
+		}
+	} while (strlen(name)>8);
+	printf("Something went wrong\n\rThe name of the task it will be setted -default-");
+	strcpy(actualTask->nameTask,"default\0");
 	return;
 }
 
