@@ -57,3 +57,4 @@ int execCommandAndLog(char* c, int index) {
 
 	return 0;
 }
+
