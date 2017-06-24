@@ -71,7 +71,6 @@ void setTaskName(Task *actualTask) {
 
 int isEmptyTaskList(Task *actualTask) {
 	if (!(actualTask->ID)) {
-		printf("\n\rList is empty! Please insert a task first...\n\r");
 		return 1;
 	}
 	return 0;

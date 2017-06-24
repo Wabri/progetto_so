@@ -50,9 +50,11 @@ int main() {
 			printf("\n\r");
 			break;
 		case 3:
-			tmpTask = selectTask(firstTask);
-			if (executeTask(tmpTask) == 0) {
-				firstTask = deleteTask(firstTask, tmpTask);
+			if (!isEmptyTaskList(firstTask)) {
+				tmpTask = selectTask(firstTask);
+				if (executeTask(tmpTask) == 0) {
+					firstTask = deleteTask(firstTask, tmpTask);
+				}
 			}
 			break;
 		case 4:
@@ -90,6 +92,8 @@ int main() {
 				printf("REMAINING EXECUTIONS \n\r");
 			}
 			printListTasks(firstTask);
+		} else {
+			printf("\n\rList is empty! Please insert a task first...\n\r");
 		}
 	}
 	return 0;
