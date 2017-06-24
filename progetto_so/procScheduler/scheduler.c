@@ -15,11 +15,11 @@ int main() {
 	char policy = 'p';
 	Task *firstTask = malloc(sizeof(Task));
 	Task *lastTask = NULL; // the last Task is always empty
-	Task *tmpTask;
 	printf(POINTSHEAD);
 	printf("               This is a process scheduler\n\r");
 	printf(POINTSHEAD);
 	while (flag == 1) {
+		Task *tmpTask;
 		switch (getChoice()) {
 		case 0:
 			printf("Bye!\n\r");
@@ -50,9 +50,11 @@ int main() {
 			printf("\n\r");
 			break;
 		case 3:
-			tmpTask = selectTask(firstTask);
-			if (executeTask(tmpTask) == 0) {
-				firstTask = deleteTask(firstTask, tmpTask);
+			if (!isEmptyTaskList(firstTask)) {
+				tmpTask = selectTask(firstTask);
+				if (executeTask(tmpTask) == 0) {
+					firstTask = deleteTask(firstTask, tmpTask);
+				}
 			}
 			break;
 		case 4:
@@ -90,6 +92,8 @@ int main() {
 				printf("REMAINING EXECUTIONS \n\r");
 			}
 			printListTasks(firstTask);
+		} else {
+			printf("\n\rList is empty! Please insert a task first...\n\r");
 		}
 	}
 	return 0;
