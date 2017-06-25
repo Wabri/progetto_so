@@ -38,32 +38,36 @@ int main() {
 			idTraker += 1;
 			break;
 		case 2:
-			printf("\n\rHow many execution do you want to do: ");
-			scanf("%d", &flag);
-			while (flag != 0) {
-				if (executeTask(firstTask) == 0) {
-					firstTask = deleteTask(firstTask, firstTask);
+			if (!isEmptyTaskList(firstTask)) {
+			tmpTask = findPreviousTask(firstTask, lastTask);
+				if (executeTask(tmpTask) == 0) {
+					lastTask = tmpTask;
+					lastTask->ID = lastTask->priority = 0;
+					strcpy(lastTask->nameTask,"/0");
+					lastTask -> nextTask = NULL;
 				}
-				flag -= 1;
-			}
-			flag = 1;
-			printf("\n\r");
+				printf("\n\r");
+			}	
 			break;
 		case 3:
 			if (!isEmptyTaskList(firstTask)) {
 				tmpTask = selectTask(firstTask);
 				if (executeTask(tmpTask) == 0) {
-					firstTask = deleteTask(firstTask, tmpTask);
+					firstTask = deleteTask(firstTask,tmpTask);
 				}
 			}
 			break;
 		case 4:
-			firstTask = deleteTask(firstTask, selectTask(firstTask));
+			if (!isEmptyTaskList(firstTask)) {
+				firstTask = deleteTask(firstTask,selectTask(firstTask));
+			}
 			break;
 		case 5:
-			modifyPriority(firstTask);
-			if (policy == 'p') {
-				firstTask = sortListByPriority(firstTask);
+			if (!isEmptyTaskList(firstTask)) {
+				modifyPriority(firstTask);
+				if (policy == 'p') {
+					firstTask = sortListByPriority(firstTask);
+				}
 			}
 			break;
 		case 6:
@@ -75,9 +79,11 @@ int main() {
 			}
 			break;
 		case 7:
-			modifyExecNumb(firstTask);
-			if (policy == 'e') {
-				firstTask = sortListByExecution(firstTask);
+			if (!isEmptyTaskList(firstTask)) {
+				modifyExecNumb(firstTask);
+				if (policy == 'e') {
+					firstTask = sortListByExecution(firstTask);
+				}
 			}
 			break;
 		default:
@@ -107,9 +113,9 @@ int main() {
 */
 int getChoice() {
 	printf("\n\rPlease select an option:\n\r");
-	printf(" 0) Exit\n\r 1) Create a new task\n\r 2) Execute the task on the top of the list\n\r");
+	printf(" 0) Exit\n\r 1) Create a new task\n\r 2) Execute a task\n\r");
 	printf(
-			" 3) Execute a task\n\r 4) Delete a task\n\r 5) Modify the PRIORITY of a task\n\r");
+			" 3) insert ID task and execute\n\r 4) Delete a task\n\r 5) Modify the PRIORITY of a task\n\r");
 	printf(
 			" 6) Switch policy (default : PRIORITY)\n\r 7) Modify the REMAINING EXECUTIONS of a task");
 	int res = 0;
