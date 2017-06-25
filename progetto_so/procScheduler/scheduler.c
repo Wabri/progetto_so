@@ -15,7 +15,6 @@ int main() {
 	char policy = 'p';
 	Task *firstTask = malloc(sizeof(Task));
 	Task *lastTask = NULL; // the last Task is always empty
-	doubleTask* tempDoubleTask = NULL;
 	printf(POINTSHEAD);
 	printf("               This is a process scheduler\n\r");
 	printf(POINTSHEAD);
@@ -39,39 +38,36 @@ int main() {
 			idTraker += 1;
 			break;
 		case 2:
-			printf("\n\rHow many execution do you want to do: ");
-			scanf("%d", &flag);
-			while (flag != 0) {
-				tmpTask = findPreviousTask(firstTask, lastTask);
+			if (!isEmptyTaskList(firstTask)) {
+			tmpTask = findPreviousTask(firstTask, lastTask);
 				if (executeTask(tmpTask) == 0) {
-					tempDoubleTask = deleteTask(firstTask,tmpTask,lastTask);
-					firstTask = tempDoubleTask->firstTask;
-					lastTask = tempDoubleTask->secondTask;
+					lastTask = tmpTask;
+					lastTask->ID = lastTask->priority = 0;
+					strcpy(lastTask->nameTask,"/0");
+					lastTask -> nextTask = NULL;
 				}
-				flag -= 1;
-			}
-			flag = 1;
-			printf("\n\r");
+				printf("\n\r");
+			}	
 			break;
 		case 3:
 			if (!isEmptyTaskList(firstTask)) {
 				tmpTask = selectTask(firstTask);
 				if (executeTask(tmpTask) == 0) {
-					tempDoubleTask = deleteTask(firstTask,tmpTask,lastTask);
-					firstTask = tempDoubleTask->firstTask;
-					lastTask = tempDoubleTask->secondTask;
+					firstTask = deleteTask(firstTask,tmpTask);
 				}
 			}
 			break;
 		case 4:
-			tempDoubleTask = deleteTask(firstTask,selectTask(firstTask),lastTask);
-			firstTask = tempDoubleTask->firstTask;
-			lastTask = tempDoubleTask->secondTask;
+			if (!isEmptyTaskList(firstTask)) {
+				firstTask = deleteTask(firstTask,selectTask(firstTask));
+			}
 			break;
 		case 5:
-			modifyPriority(firstTask);
-			if (policy == 'p') {
-				firstTask = sortListByPriority(firstTask);
+			if (!isEmptyTaskList(firstTask)) {
+				modifyPriority(firstTask);
+				if (policy == 'p') {
+					firstTask = sortListByPriority(firstTask);
+				}
 			}
 			break;
 		case 6:
@@ -83,9 +79,11 @@ int main() {
 			}
 			break;
 		case 7:
-			modifyExecNumb(firstTask);
-			if (policy == 'e') {
-				firstTask = sortListByExecution(firstTask);
+			if (!isEmptyTaskList(firstTask)) {
+				modifyExecNumb(firstTask);
+				if (policy == 'e') {
+					firstTask = sortListByExecution(firstTask);
+				}
 			}
 			break;
 		default:
