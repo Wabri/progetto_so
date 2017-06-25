@@ -71,8 +71,7 @@
 \newpage
 \tableofcontents
 
-\section{Primo Esercizio}
-\textbf{Simulatore di chiamate a procedura}
+\section{Primo Esercizio : Simulatore di chiamate a procedura}
 \subsection{Descrizione dell'implementazione}
 L'obiettivo del primo esercizio \'e quello di implementare uno scheduler di processi. Quest'ultimo deve permettere all'utente di poter creare, eseguire ed eliminare i processi stessi secondo una politica di priorit\'a od esecuzioni rimanenti. \\
 Abbiamo organizzato il codice in tre files: due librerie \textit{config.h} e \textit{taskmanager.h} ed un programma, \textit{scheduler.c}. All'interno di \textit{config.h}\ref{config} vengono unicamente definite due stringhe utilizzate nella formattazione dell'output. All'interno di \textit{taskmanager.h}\ref{task} abbiamo invece definito la \texttt{struct} \textit{TaskElement}, ovvero l'elemento \textbf{\textit{Task}}, descritto da 5 campi fondamentali che rappresentano un processo all'interno della nostra implementazione:
@@ -136,8 +135,7 @@ Le operazioni legate allo scheduling sono state poi affidate a \textit{scheduler
 \lstinputlisting[label = sched, caption=scheduler.c, style=customc]{progetto_so/procScheduler/scheduler.c}
 
 \newpage
-\section{Secondo Esercizio}
-\textbf{Esecutore di comandi}
+\section{Secondo Esercizio : Esecutore di comandi}
 \subsection{Descrizione dell'implementazione}
 L'obiettivo del secondo esercizo \'e quello di creare un esecutore di comandi \texttt{UNIX} che scriva, sequenzialmente o parallelamente, l'output dell'esecuzione su di un file. \\
 Tutte le funzionalit\'a del programma sono incluse all'interno della libreria \textit{functions.h}\ref{funct} e fanno uso a loro volta della libreria \textit{unistd.h}.
@@ -152,8 +150,7 @@ Il codice viene eseguito nel \textit{cmd.c}\ref{cmd}, all'interno del quale vi \
 \lstinputlisting[label=funct, caption=functions.h, style=customc]{progetto_so/commandexe/functions.h}
 
 \newpage
-\section{Terzo Esercizio}
-\textbf{Message passing}
+\section{Terzo Esercizio : Message passing}
 \subsection{Descrizione dell'implementazione}
 L’obiettivo del terzo esercizio \'e l’implementazione di un client e un server che comunicano tramite pipe con nome ed eseguono routine dipendentemente dal tipo di richiesta.\\
 Inizialmente viene eseguito il \textit{server.c}\ref{server} che racchiude le sue funzionalit\'a nei file inclusi \textit{functions.server.h}\ref{funser} e \textit{listmanage.h}\ref{list}. Il client invece include la libreria \textit{functions.client.h}\ref{funcli}.
