@@ -127,9 +127,6 @@ Le operazioni legate allo scheduling sono state poi affidate a \textit{scheduler
 \item \texttt{main()} : Main del programma.
 \end{itemize}
 
-\subsection{Evidenza del corretto funzionamento}
-
-
 
 \subsection{Codice}
 \lstinputlisting[label=config, caption=config.c, style=customc]{progetto_so/procScheduler/config.h}
@@ -141,13 +138,13 @@ Le operazioni legate allo scheduling sono state poi affidate a \textit{scheduler
 \textbf{Esecutore di comandi}
 \subsection{Descrizione dell'implementazione}
 L'obiettivo del secondo esercizo \'e quello di creare un esecutore di comandi \texttt{UNIX} che scriva, sequenzialmente o parallelamente, l'output dell'esecuzione su di un file. \\
-Tutte le funzionalit\'a del programma sono incluse all'interno della libreria \textit{cmd.h}\ref{cmd} e fanno uso a loro volta della libreria \textit{unistd.h}.
+Tutte le funzionalit\'a del programma sono incluse all'interno della libreria \textit{functions.h}\ref{funct} e fanno uso a loro volta della libreria \textit{unistd.h}.
 La funzione \texttt{initDataFolder()} si occupa di creare la cartella ed inserirvi il file di output. Essa viene generata all'interno della directory \textit{"../commandexe/data/[pid]"} dove il \textit{pid} \'e il process ID del chiamante in questione, ritornato dal \texttt{getpid()}.
 Il comando inserito dall'utente viene poi eseguito attraverso una \texttt{popen()}, la quale apre uno stream di scrittura/lettura su di una pipe, inserendovi l'output del comando.
 La funzione \texttt{execCommandAndLog(char,int)} genera due \textit{char[]}, rispettivamente il \textit{path} ed il \textit{filename}, quest'ultimo viene nominato attraverso il pid e l'indice di esecuzione, come richiesto dalla specifica di implementazione.
 Viene poi eseguito il comando ed il log dell'output: l'esecuzione viene affidata ancora una volta ad una \texttt{popen()} mentre la scrittura dell'output viene eseguita mediante le usuali funzioni dello \texttt{stdin} attraverso il descrittore di file generato precedentemente.
-\subsection{Evidenza del corretto funzionamento}
-Qu\'i andranno gli screenshot
+Il codice viene eseguito nel \textit{cmd.c}\ref{cmd}, all'interno del quale vi \'e un ciclo while che itera fino a quando non viene inserita la stringa vuota dall'utente.
+
 \subsection{Codice}
 \lstinputlisting[label=cmd, caption=cmd.c, style=customc]{progetto_so/commandexe/cmd.c}
 \lstinputlisting[label=funct, caption=functions.h, style=customc]{progetto_so/commandexe/functions.h}
@@ -156,8 +153,7 @@ Qu\'i andranno gli screenshot
 \section{Terzo Esercizio}
 \textbf{Message passing}
 \subsection{Descrizione dell'implementazione}
-\subsection{Evidenza del corretto funzionamento}
-Qu\'i andranno gli screenshot
+
 \subsection{Codice}
 \lstinputlisting[label=config3, caption=config.h, style=customc]{progetto_so/messageExchange/config.h}
 \lstinputlisting[label=funcli, caption=functions.client.h, style=customc]{progetto_so/messageExchange/functions.client.h}
