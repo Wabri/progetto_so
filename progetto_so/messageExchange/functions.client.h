@@ -200,11 +200,11 @@ void sendMessage(){
 */
 void disconnect(){
     if(connected == 0){
-        printf("%s\n", "Already disconnected");
+        printf("\n%s\n", "Already disconnected");
         return;
     }
     
-    printf("%s\n", "Client disconnected");
+    printf("\n%s\n", "Client disconnected");
 
     char str[7];
 
@@ -282,7 +282,7 @@ void sigHandler_2(int signumber){
         // sprintf(p_pipeName,"%s %s",PIPES_PATH, s_pid);
 
         strcpy(pipeName, p_pipeName); /* BANG!!! */
-        fd_client = open(pipeName, O_RDWR); /* Open it for writing */
+        fd_client = open(pipeName, O_RDONLY); /* Open it for writing */
         
         if(DEBUG)
             printf("    [DEBUG] Reading from: %s ...\n", pipeName);

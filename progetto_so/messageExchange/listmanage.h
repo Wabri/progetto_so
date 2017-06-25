@@ -224,7 +224,7 @@ int  clients_killer(struct node *r){
     while(r!=NULL){
         pid = atoi(r->data);
         if(DEBUG)
-            printf("[DEBUG] pid to kill: %d\n",pid);
+            printf("    [DEBUG] pid to kill: %d\n",pid);
 
         kill(pid,SIGINT);
         clientsKilled += 1;
