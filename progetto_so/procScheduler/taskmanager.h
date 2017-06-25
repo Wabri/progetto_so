@@ -12,6 +12,11 @@ typedef struct TaskElement {
 	struct TaskElement *nextTask;
 } Task;
 
+typedef struct doubleTask{
+	Task* firstTask;
+	Task* secondTask;
+} doubleTask;
+
 int setExeNumber(void);
 int setPriority(void);
 void setTaskName(Task*);
@@ -22,7 +27,8 @@ void modifyExecNumb(Task*);
 Task* newTaskElement(Task*, int);
 void printTask(Task*);
 void printListTasks(Task*);
-Task* deleteTask(Task*, Task*);
+void setDefaultTask(Task*);
+doubleTask* deleteTask(Task*, Task*, Task*);
 int executeTask(Task*);
 Task* findPreviousTask (Task*, Task*);
 
@@ -167,6 +173,7 @@ Task* newTaskElement(Task *actualTask, int idT) {
 	actualTask->priority = setPriority();
 	actualTask->remainingExe = setExeNumber();
 	(*actualTask).nextTask = malloc(sizeof(Task));
+	setDefaultTask(actualTask->nextTask);
 	return (*actualTask).nextTask;
 }
 
@@ -204,37 +211,60 @@ void printListTasks(Task *first) {
 
 /*
 *
+* PURPOSE : Set a default value to Task
+* PARAMS : Task* thisTask -> pointer of the task to set
+* RETURN : void
+*
+*/
+void setDefaultTask(Task* thisTask) {
+	thisTask -> ID = thisTask -> priority = thisTask ->remainingExe = 0;
+	strcpy(thisTask->nameTask, "/0");
+	return;
+}
+
+/*
+*
 * PURPOSE : Delete a Task
 * PARAMS : Task* first -> pointer of the first task of the list
 * PARAMS : Task* thisTask -> pointer of the task to delete
-* RETURN : Task* -> return the pointer of the first task of the list
+* PARAMS : Task* last -> pointer of the last task of the list
+* RETURN : Task*[2] -> array of 2 pointer Task, first element is the new head Task of the list and the second element is the new last element of the list
 *
 */
-Task* deleteTask(Task *first, Task *thisTask) {
+doubleTask* deleteTask(Task *first, Task *thisTask, Task *last) {
+	doubleTask* tempDoubleTask;
+	tempDoubleTask->firstTask = first;
+	tempDoubleTask->secondTask = last;
 	if (thisTask != NULL) {
-		Task *tmpTask = first;
+		Task* tempTask = findPreviousTask(first,last);
+		if (thisTask == first && thisTask == tempTask) {
+			setDefaultTask(thisTask);
+			thisTask -> nextTask = malloc(sizeof(Task));
+			tempDoubleTask->secondTask=thisTask->nextTask;
+			tempDoubleTask->firstTask=thisTask;
+			return tempDoubleTask;
+		}
 		if (thisTask == first) {
-			tmpTask = thisTask->nextTask;
-			thisTask->ID = thisTask->priority = thisTask->remainingExe = 0;
-			strcpy(thisTask->nameTask, "\0");
-			thisTask->nextTask = NULL;
-			return tmpTask;
+			tempDoubleTask->firstTask = thisTask->nextTask;
+			setDefaultTask(thisTask);
+			thisTask -> nextTask = NULL;
+			return tempDoubleTask;
+		} else if (thisTask == tempTask) {
+			tempTask = findPreviousTask(first,thisTask);
+			setDefaultTask(thisTask);
+			thisTask -> nextTask = malloc(sizeof(Task));
+			tempDoubleTask->secondTask = thisTask->nextTask;
+			return tempDoubleTask;
 		} else {
-			while (tmpTask->nextTask == NULL) {
-				if (tmpTask->nextTask == thisTask) {
-					tmpTask->nextTask = thisTask->nextTask;
-					thisTask->ID = thisTask->priority = thisTask->remainingExe =
-							0;
-					strcpy(thisTask->nameTask, "\0");
-					thisTask->nextTask = NULL;
-					return first;
-				}
-				tmpTask = tmpTask->nextTask;
-			}
+			tempTask = findPreviousTask(first,thisTask);
+			tempTask->nextTask = thisTask->nextTask;
+			setDefaultTask(thisTask);
+			thisTask -> nextTask = NULL;
+			return tempDoubleTask;
 		}
 	}
 	printf("There is no task to delete!\n\r");
-	return first;
+	return tempDoubleTask;
 }
 
 /*
@@ -274,7 +304,7 @@ Task* findPreviousTask (Task* firstTask, Task* thisTask) {
 			}
 			tempTask=tempTask->nextTask;
 		}
-		return tempTask
+		return tempTask;
 	}
 	printf("There is no task to find!\n\r");
 	return NULL;

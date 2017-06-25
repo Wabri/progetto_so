@@ -15,6 +15,7 @@ int main() {
 	char policy = 'p';
 	Task *firstTask = malloc(sizeof(Task));
 	Task *lastTask = NULL; // the last Task is always empty
+	doubleTask* tempDoubleTask = NULL;
 	printf(POINTSHEAD);
 	printf("               This is a process scheduler\n\r");
 	printf(POINTSHEAD);
@@ -41,8 +42,11 @@ int main() {
 			printf("\n\rHow many execution do you want to do: ");
 			scanf("%d", &flag);
 			while (flag != 0) {
-				if (executeTask(lastTask) == 0) {
-					lastTask = findPreviousTask(lastTask);
+				tmpTask = findPreviousTask(firstTask, lastTask);
+				if (executeTask(tmpTask) == 0) {
+					tempDoubleTask = deleteTask(firstTask,tmpTask,lastTask);
+					firstTask = tempDoubleTask->firstTask;
+					lastTask = tempDoubleTask->secondTask;
 				}
 				flag -= 1;
 			}
@@ -53,12 +57,16 @@ int main() {
 			if (!isEmptyTaskList(firstTask)) {
 				tmpTask = selectTask(firstTask);
 				if (executeTask(tmpTask) == 0) {
-					firstTask = deleteTask(firstTask, tmpTask);
+					tempDoubleTask = deleteTask(firstTask,tmpTask,lastTask);
+					firstTask = tempDoubleTask->firstTask;
+					lastTask = tempDoubleTask->secondTask;
 				}
 			}
 			break;
 		case 4:
-			firstTask = deleteTask(firstTask, selectTask(firstTask));
+			tempDoubleTask = deleteTask(firstTask,selectTask(firstTask),lastTask);
+			firstTask = tempDoubleTask->firstTask;
+			lastTask = tempDoubleTask->secondTask;
 			break;
 		case 5:
 			modifyPriority(firstTask);
