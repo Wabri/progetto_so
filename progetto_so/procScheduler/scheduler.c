@@ -113,9 +113,9 @@ int main() {
 */
 int getChoice() {
 	printf("\n\rPlease select an option:\n\r");
-	printf(" 0) Exit\n\r 1) Create a new task\n\r 2) Execute the task on the top of the list\n\r");
+	printf(" 0) Exit\n\r 1) Create a new task\n\r 2) Execute a task\n\r");
 	printf(
-			" 3) Execute a task\n\r 4) Delete a task\n\r 5) Modify the PRIORITY of a task\n\r");
+			" 3) insert ID task and execute\n\r 4) Delete a task\n\r 5) Modify the PRIORITY of a task\n\r");
 	printf(
 			" 6) Switch policy (default : PRIORITY)\n\r 7) Modify the REMAINING EXECUTIONS of a task");
 	int res = 0;
