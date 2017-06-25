@@ -132,9 +132,9 @@ Le operazioni legate allo scheduling sono state poi affidate a \textit{scheduler
 
 
 \subsection{Codice}
-\lstinputlisting[label=config, caption=config.c, style=customc]{progetto_so/procScheduler/config.h}
-\lstinputlisting[label=task, caption=Task Manager, style=customc]{progetto_so/procScheduler/taskmanager.h}
-\lstinputlisting[label = sched, caption=scheduler.c, style=customc]{progetto_so/procScheduler/scheduler.c}
+\lstinputlisting[label=config, caption=config.c, style=customc]{../procScheduler/config.h}
+\lstinputlisting[label=task, caption=Task Manager, style=customc]{../procScheduler/taskmanager.h}
+\lstinputlisting[label = sched, caption=scheduler.c, style=customc]{../procScheduler/scheduler.c}
 
 \newpage
 \section{Secondo Esercizio : Esecutore di comandi}
@@ -148,8 +148,8 @@ Viene poi eseguito il comando ed il log dell'output: l'esecuzione viene affidata
 Il codice viene eseguito nel \textit{cmd.c}\ref{cmd}, all'interno del quale vi \'e un ciclo while che itera fino a quando non viene inserita la stringa vuota dall'utente.
 
 \subsection{Codice}
-\lstinputlisting[label=cmd, caption=cmd.c, style=customc]{progetto_so/commandexe/cmd.c}
-\lstinputlisting[label=funct, caption=functions.h, style=customc]{progetto_so/commandexe/functions.h}
+\lstinputlisting[label=cmd, caption=cmd.c, style=customc]{../commandexe/cmd.c}
+\lstinputlisting[label=funct, caption=functions.h, style=customc]{../commandexe/functions.h}
 
 \newpage
 \section{Terzo Esercizio : Message passing}
@@ -184,13 +184,13 @@ Il segnale \textbf{SIGUSR2} invece \'e inviato dal server ad un client quando qu
 Un altro segnale intercettato sia dal client che dal server \'e il \textbf{SIGINT}. Quando questo segnale viene intercettato da un client, esso si disconnette dal server prima di terminare mentre in caso sia intercettato dal server fa terminare tutti I client connessi inviandogli lo stesso segnale \textbf{SIGINT}.
 
 \subsection{Codice}
-\lstinputlisting[label=config3, caption=config.h, style=customc]{progetto_so/messageExchange/config.h}
-\lstinputlisting[label=funcli, caption=functions.client.h, style=customc]{progetto_so/messageExchange/functions.client.h}
-\lstinputlisting[label=funser, caption=functions.server.h, style=customc]{progetto_so/messageExchange/functions.server.h}
-\lstinputlisting[label=list, caption=listmanage.h, style=customc]{progetto_so/messageExchange/listmanage.h}
-\lstinputlisting[label=funinc, caption=functions.inc.h, style=customc]{progetto_so/messageExchange/functions.inc.h}
-\lstinputlisting[label=client, caption=client.c, style=customc]{progetto_so/messageExchange/client.c}
-\lstinputlisting[label=server, caption=server.c, style=customc]{progetto_so/messageExchange/server.c}
+\lstinputlisting[label=config3, caption=config.h, style=customc]{../messageExchange/config.h}
+\lstinputlisting[label=funcli, caption=functions.client.h, style=customc]{../messageExchange/functions.client.h}
+\lstinputlisting[label=funser, caption=functions.server.h, style=customc]{../messageExchange/functions.server.h}
+\lstinputlisting[label=list, caption=listmanage.h, style=customc]{../messageExchange/listmanage.h}
+\lstinputlisting[label=funinc, caption=functions.inc.h, style=customc]{../messageExchange/functions.inc.h}
+\lstinputlisting[label=client, caption=client.c, style=customc]{../messageExchange/client.c}
+\lstinputlisting[label=server, caption=server.c, style=customc]{../messageExchange/server.c}
 
 \clearpage
 \section{Evidenza del corretto funzionamento dei programmi}

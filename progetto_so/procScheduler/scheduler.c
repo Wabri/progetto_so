@@ -1,4 +1,4 @@
-#include <string.h>
+m#include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include "taskmanager.h"
@@ -107,8 +107,8 @@ int main() {
 
 /*
 *
-* PURPOSE : Print menù and get the choice
-* RETURN : int -> choice of the menù
+* PURPOSE : Print menu and get the choice
+* RETURN : int -> choice of the menu
 *
 */
 int getChoice() {

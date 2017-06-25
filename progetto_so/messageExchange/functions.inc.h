@@ -39,10 +39,10 @@ char* concat(const char *s1, const char *s2){
 *
 */
 int readLine(int fd, char *str) {
-    /* Read a single ’\0’-terminated line into str from fd */
+    /* Read a single '\0'-terminated line into str from fd */
     /* Return 0 when the end-of-input is reached and 1 otherwise */
     int n;
-    do { /* Read characters until ’\0’ or end-of-input */
+    do { /* Read characters until '\0' or end-of-input */
         n = read (fd, str, 1); /* Read one character */
     } while (n > 0 && *str++ != '\0');
     return (n > 0); /* Return false if end-of-input */

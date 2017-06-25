@@ -151,7 +151,7 @@ void sendMessage(){
         int pid;
         
         while (1) {
-            printf("\nEnter the %dth pid destination (letters to return to Menù): ", k);
+            printf("\nEnter the %dth pid destination (letters to return to Menu): ", k);
             
             if(scanf("%d", &pid)==1){    
                 if(DEBUG)
