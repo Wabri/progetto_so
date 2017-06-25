@@ -41,8 +41,8 @@ int main() {
 			printf("\n\rHow many execution do you want to do: ");
 			scanf("%d", &flag);
 			while (flag != 0) {
-				if (executeTask(firstTask) == 0) {
-					firstTask = deleteTask(firstTask, firstTask);
+				if (executeTask(lastTask) == 0) {
+					lastTask = findPreviousTask(lastTask);
 				}
 				flag -= 1;
 			}

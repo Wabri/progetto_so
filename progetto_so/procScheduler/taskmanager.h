@@ -24,6 +24,7 @@ void printTask(Task*);
 void printListTasks(Task*);
 Task* deleteTask(Task*, Task*);
 int executeTask(Task*);
+Task* findPreviousTask (Task*, Task*);
 
 /*
 *
@@ -253,4 +254,28 @@ int executeTask(Task *thisTask) {
 	}
 	printf("There is no task to execute!\n\r");
 	return 0;
+}
+
+/*
+*
+* PURPOSE : Find previous Task
+* PARAMS : Task* firstTask -> pointer of the first task of the list
+* PARAMS : Task* thisTask -> pointer of the follower task to find
+* RETURN : Task* -> return the prevoius Task of thisTask
+*
+*/
+Task* findPreviousTask (Task* firstTask, Task* thisTask) {
+	if (thisTask!=NULL) {
+		Task* tempTask = firstTask;
+		while (tempTask->nextTask!=thisTask) {
+			if (tempTask->nextTask == NULL) {
+				printf("There is no task to find!\n\r");
+				return NULL;
+			}
+			tempTask=tempTask->nextTask;
+		}
+		return tempTask
+	}
+	printf("There is no task to find!\n\r");
+	return NULL;
 }
