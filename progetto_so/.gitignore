@@ -1,7 +1,0 @@
-# Folder create when program is run
-commandexe/data
-messageExchange/data
-
-# Type of file to exclude
-*.o
-*.out

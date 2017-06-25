@@ -24,6 +24,7 @@ void printTask(Task*);
 void printListTasks(Task*);
 Task* deleteTask(Task*, Task*);
 int executeTask(Task*);
+Task* findPreviousTask(Task*, Task*);
 
 /*
 *
