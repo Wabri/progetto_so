@@ -11,6 +11,7 @@
 \usepackage{color}
 \usepackage{fancyhdr}
 \usepackage{amssymb}
+\usepackage{gensymb}
 \usepackage{amsmath} 
 \usepackage[margin=2.5cm]{geometry} 
 \usepackage{listings}
@@ -153,6 +154,34 @@ Il codice viene eseguito nel \textit{cmd.c}\ref{cmd}, all'interno del quale vi \
 \section{Terzo Esercizio}
 \textbf{Message passing}
 \subsection{Descrizione dell'implementazione}
+L’obiettivo del terzo esercizio \'e l’implementazione di un client e un server che comunicano tramite pipe con nome ed eseguono routine dipendentemente dal tipo di richiesta.\\
+Inizialmente viene eseguito il \textit{server.c}\ref{server} che racchiude le sue funzionalit\'a nei file inclusi \textit{functions.server.h}\ref{funser} e \textit{listmanage.h}\ref{list}. Il client invece include la libreria \textit{functions.client.h}\ref{funcli}.
+Sia \textit{client.c} che \textit{server.c} condividono due librerie, rispettivamente \textit{functions.inc.h}\ref{funinc} e \textit{config.h}\ref{config3}.\\
+Una volta mandato in esecuzione, il server aspetta comandi dal client in linea con il formato del protocollo definito.
+Il protocollo definito per permettere la comunicazione tra client e server  \'e composto da una stringa in cui le informazioni sono separate da spazio. Il server quindi si preoccupa di splittare la stringa ricevuta per avere tutte le informazioni della richiesta. Ogni richiesta \'e composta da una prima informazione che identifica l’ID del comando (1-5), la seconda invece l’ID del client richiedente.
+L’unica eccezione \'e fatta dal comando n \degree 3 che oltre a queste due informazioni segue con l’ID del client destinatario e il messaggio da inviare.
+Abbiamo definito che l’ID di ogni client corrisponde al suo PID.
+Per ogni funzionalit\'a \'e definito il formato per richiederla e un esempio:
+
+\begin{enumerate}
+\item Connessione, con la quale il client si registra presso il server. $\rightarrow$ "1 [pid\_richiedente]” $\rightarrow$ "1 5555”
+
+\item Richiesta elenco ID dei client registrati, con la quale si richiede al server l'elenco dei client attualmente registrati. $\rightarrow$ "1 [pid\_richiedente]” $\rightarrow$ "1 5555”
+
+\item Invio di un messaggio testuale a un altro client o a un insieme di client (specificandone l'ID). $\rightarrow$ "1 [pid\_richiedente] [pid\_destinatario] [messaggio]” $\rightarrow$ "1 5555 4444 Questo \'e un messaggio da recapitare”
+
+\item Disconnessione, con la quale il client richiede la cancellazione della registrazione presso il server. $\rightarrow$ "1 [pid\_richiedente]” $\rightarrow$ "1 5555”
+
+\item Uscita dal programma. $\rightarrow$ "1 [pid\_richiedente]” $\rightarrow$ "1 5555”
+
+\end{enumerate}
+\vspace{0.2cm}
+\textbf{Infrastrutture e segnali previsti}: \\
+La comunicazione tra client e server per richiedere l’esecuzione di una routine avviene tramite la pipe con nome "data/pipe” (definita nel \textit{config.h}\ref{config3}).
+Il server quando riceve una richiesta di connessione o di disconnessione aggiorna la sua lista concatenata nella quale si mantiene i client connessi. Le funzioni per interagire con questa lista sono definite in listmanage.h.\\
+Quando il server ha la necessità di inviare informazioni ad uno specifico client si crea una pipe "data/[PID\_DEST]”, scrive sulla pipe e segnala l’evento al relativo client tramite segnale \textbf{SIGUSR1}.
+Il segnale \textbf{SIGUSR2} invece \'e inviato dal server ad un client quando quest’ultimo ha richiesto l’invio di un messaggio ad un client non connesso al server.
+Un altro segnale intercettato sia dal client che dal server \'e il \textbf{SIGINT}. Quando questo segnale viene intercettato da un client, esso si disconnette dal server prima di terminare mentre in caso sia intercettato dal server fa terminare tutti I client connessi inviandogli lo stesso segnale \textbf{SIGINT}.
 
 \subsection{Codice}
 \lstinputlisting[label=config3, caption=config.h, style=customc]{progetto_so/messageExchange/config.h}
