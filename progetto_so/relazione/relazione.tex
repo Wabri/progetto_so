@@ -8,6 +8,7 @@
 \usepackage{tabu}
 \usepackage{import}
 \usepackage{subcaption}
+\usepackage[section]{placeins}
 \usepackage{color}
 \usepackage{fancyhdr}
 \usepackage{amssymb}
@@ -59,7 +60,7 @@
 
 \title{\vspace{2cm}Relazione sul Progetto dell'Esame di\\ \textbf{Sistemi Operativi}\\ Anno Accademico 2016/17}
 
-\author{Bacciarini Yuri - \texttt{xxxxxxx} - \href{mailto:yuri.bacciarini@stud.unifi.it}{\textit{yuri.bacciarini@stud.unifi.it}}
+\author{Bacciarini Yuri - \texttt{5654547} - \href{mailto:yuri.bacciarini@stud.unifi.it}{\textit{yuri.bacciarini@stud.unifi.it}}
    \and Bindi Giovanni - \texttt{5530804} - \href{mailto:giovanni.bindi@stud.unifi.it}{\textit{giovanni.bindi@stud.unifi.it}}
    \and Puliti Gabriele- \texttt{5300140} - \href{mailto:gabriele.puliti@stud.unifi.it}{\textit{gabriele.puliti@stud.unifi.it}}} 
 
@@ -67,9 +68,9 @@
 
 \maketitle
 
+\newpage
 \tableofcontents
 
-\newpage
 \section{Primo Esercizio}
 \textbf{Simulatore di chiamate a procedura}
 \subsection{Descrizione dell'implementazione}
@@ -192,6 +193,8 @@ Un altro segnale intercettato sia dal client che dal server \'e il \textbf{SIGIN
 \lstinputlisting[label=client, caption=client.c, style=customc]{progetto_so/messageExchange/client.c}
 \lstinputlisting[label=server, caption=server.c, style=customc]{progetto_so/messageExchange/server.c}
 
-\section{Evidenza del corretto funzionamento}
+\clearpage
+\section{Evidenza del corretto funzionamento dei programmi}
+\pagenumbering{roman}
 \input{figure.tex}
 \end{document}
